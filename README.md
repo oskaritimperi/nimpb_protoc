@@ -20,6 +20,8 @@ nimpb_build is modeled somewhat after [prost-build](https://github.com/danburker
 
 # Usage
 
+## As a binary
+
 Using the tool is simple:
 
     $ nimpb_build -I. --out=. my.proto
@@ -35,14 +37,22 @@ file and create a task for generating code:
     task proto, "Process .proto files":
         exec "nimpb_build -I. --out=. my.proto"
 
+## As a library
+
+It's also possible to use nimpb_build as a library:
+
+```nim
+import nimpb_build
+
+let protos = @["my.proto"]
+let incdirs = @["."]
+let outdir = "."
+
+compileProtos(protos, incdirs, outdir)
+```
+
 # How it works
 
-nimpb_build includes functionality to invoke the protoc compiler. It also
-includes a built-in protoc plugin, that protoc will use to generate the Nim
-code.
-
-First, nimpb_build will execute protoc with correct arguments. It will also
-pass itself as a plugin using the --plugin argument to protoc. nimpb_build
-will set the NIMPB_BUILD_PLUGIN=1 environment variable when executing protoc,
-so that when protoc executes nimpb_build, the new nimpb_build instance knows
-to work in protoc plugin mode.
+nimpb_build invokes the protoc compiler with `--descriptor_set_out` parameter,
+which makes protoc output a `FileDescriptorSet` (defined [here](src/nimpb_buildpkg/protobuf/include/google/protobuf/descriptor.proto)) into a file. nimpb_build then reads and parses the file,
+and generates Nim code from the parsed definitions.
