@@ -18,6 +18,7 @@ type
     Enum = ref object
         names: Names
         values: seq[tuple[name: string, number: int]]
+        defaultValue: string
 
     Field = ref object
         number: int
@@ -192,10 +193,13 @@ proc defaultValue(field: Field): string =
         return &"newTable[{field.mapKeyType}, {field.mapValueType}]()"
     elif isRepeated(field):
         return "@[]"
+    elif isEnum(field):
+        for e in field.message.file.enums:
+            if $e.names == field.typeName:
+                result = e.defaultValue
+                break
     else:
         result = defaultValue(field.ftype)
-        if isEnum(field):
-            result = &"cast[{field.typeName}]({result})"
 
 proc wiretypeStr(field: Field): string =
     result = "WireType."
@@ -360,6 +364,8 @@ proc newEnum(names: Names, desc: google_protobuf_EnumDescriptorProto): Enum =
 
     for value in desc.value:
         add(result.values, (value.name, int(value.number)))
+
+    result.defaultValue = &"{result.names}.{result.values[0].name}"
 
     type EnumValue = tuple[name: string, number: int]
 
