@@ -533,6 +533,7 @@ iterator genType(message: Message): string =
         yield &"{message.names}* = ref {message.names}Obj"
         yield &"{message.names}Obj* = object of RootObj"
         yield indent(&"hasField: IntSet", 4)
+        yield indent(&"unknownFields: seq[UnknownField]", 4)
 
         for field in message.fields:
             if isMapEntry(field):
@@ -553,6 +554,7 @@ iterator genNewMessageProc(msg: Message): string =
     yield &"proc new{msg.names}*(): {msg.names} ="
     yield indent("new(result)", 4)
     yield indent("result.hasField = initIntSet()", 4)
+    yield indent("result.unknownFields = @[]", 4)
     for field in msg.fields:
         yield indent(&"result.{field.accessor} = {defaultValue(field)}", 4)
     yield ""
@@ -619,6 +621,7 @@ iterator genWriteMapKVProc(msg: Message): string =
 
 iterator genWriteMessageProc(msg: Message): string =
     yield &"proc write{msg.names}*(stream: ProtobufStream, message: {msg.names}) ="
+
     for field in msg.fields:
         if isMapEntry(field):
             yield indent(&"for key, value in message.{field.name}:", 4)
@@ -639,8 +642,7 @@ iterator genWriteMessageProc(msg: Message): string =
             yield indent(&"if has{field.name}(message):", 4)
             yield indent(&"{field.writeProc}(stream, message.{field.accessor}, {field.number})", 8)
 
-    if len(msg.fields) == 0:
-        yield indent("discard", 4)
+    yield indent("writeUnknownFields(stream, message.unknownFields)", 4)
 
     yield ""
 
@@ -737,7 +739,7 @@ iterator genReadMessageProc(msg: Message): string =
                     yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
                 else:
                     yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
-        yield indent("else: skipField(stream, wireType)", 8)
+        yield indent("else: readUnknownField(stream, tag, result.unknownFields)", 8)
     yield ""
 
 iterator genSizeOfMapKVProc(message: Message): string =
