@@ -28,12 +28,15 @@ type
         packed: bool
         oneof: Oneof
         mapEntry: Message
+        defaultValue: string
+        message: Message
 
     Message = ref object
         names: Names
         fields: seq[Field]
         oneofs: seq[Oneof]
         mapEntry: bool
+        file: ProtoFile
 
     Oneof = ref object
         name: string
@@ -156,13 +159,8 @@ proc `$`(ft: google_protobuf_FieldDescriptorProtoType): string =
     of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "SInt32"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "SInt64"
 
-proc defaultValue(field: Field): string =
-    if isMapEntry(field):
-        return &"newTable[{field.mapKeyType}, {field.mapValueType}]()"
-    elif isRepeated(field):
-        return "@[]"
-
-    case field.ftype
+proc defaultValue(ftype: google_protobuf_FieldDescriptorProto_Type): string =
+    case ftype
     of google_protobuf_FieldDescriptorProtoType.TypeDouble: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeFloat: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeInt64: result = "0"
@@ -176,11 +174,28 @@ proc defaultValue(field: Field): string =
     of google_protobuf_FieldDescriptorProtoType.TypeMessage: result = "nil"
     of google_protobuf_FieldDescriptorProtoType.TypeBytes: result = "bytes(\"\")"
     of google_protobuf_FieldDescriptorProtoType.TypeUInt32: result = "0"
-    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result = &"{field.typeName}(0)"
+    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeSFixed32: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "0"
+
+proc defaultValue(field: Field): string =
+    if field.defaultValue != nil:
+        if isEnum(field):
+            return &"{field.typeName}.{field.defaultValue}"
+        elif field.ftype == google_protobuf_FieldDescriptorProtoType.TypeString:
+            return escape(field.defaultValue)
+        else:
+            return field.defaultValue
+    elif isMapEntry(field):
+        return &"newTable[{field.mapKeyType}, {field.mapValueType}]()"
+    elif isRepeated(field):
+        return "@[]"
+    else:
+        result = defaultValue(field.ftype)
+        if isEnum(field):
+            result = &"cast[{field.typeName}]({result})"
 
 proc wiretypeStr(field: Field): string =
     result = "WireType."
@@ -258,6 +273,7 @@ proc newField(file: ProtoFile, message: Message, desc: google_protobuf_FieldDesc
     result.typeName = ""
     result.packed = false
     result.mapEntry = nil
+    result.message = message
 
     # Identifiers cannot start/end with underscore
     removePrefix(result.name, '_')
@@ -295,6 +311,9 @@ proc newField(file: ProtoFile, message: Message, desc: google_protobuf_FieldDesc
     else:
         result.typeName = $result.ftype
 
+    if hasDefaultValue(desc):
+        result.defaultValue = desc.default_value
+
     log(&"newField {result.name} {$result.ftype} {result.typeName} PACKED={result.packed} SYNTAX={file.syntax}")
 
 proc newOneof(name: string): Oneof =
@@ -309,6 +328,7 @@ proc newMessage(file: ProtoFile, names: Names, desc: google_protobuf_DescriptorP
     result.fields = @[]
     result.oneofs = @[]
     result.mapEntry = false
+    result.file = file
 
     if hasOptions(desc) and hasMapEntry(desc.options):
         result.mapEntry = desc.options.mapEntry
