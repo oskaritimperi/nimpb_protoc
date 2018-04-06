@@ -5,7 +5,7 @@ import strformat
 import strtabs
 import strutils
 
-from nimpb_buildpkg/plugin import pluginMain
+from nimpb_buildpkg/plugin import processFileDescriptorSet
 
 when defined(windows):
     const compilerId = "win32"
@@ -54,71 +54,55 @@ template verboseEcho(x: untyped): untyped =
     if verbose:
         echo(x)
 
-proc compileProtos*(protos: openArray[string], outdir: string,
-                    includes: openArray[string], verbose: bool) =
-    let command = findCompiler()
-    var baseArgs: seq[string] = @[]
+proc myTempDir(): string =
+    result = getTempDir() / "nimpb_build_tmp"
 
-    add(baseArgs, &"--plugin=protoc-gen-nim={getAppFilename()}")
+proc compileProtos*(protos: openArray[string],
+                    includes: openArray[string],
+                    outdir: string) =
+    let command = findCompiler()
+    var args: seq[string] = @[]
+
+    var outputFilename = myTempDir() / "file-descriptor-set"
+    createDir(myTempDir())
+
+    # add(args, "--include_imports")
+    add(args, "--include_source_info")
+    add(args, &"-o{outputFilename}")
 
     for incdir in includes:
-        verboseEcho(&"Adding include directory: {incdir}")
-        add(baseArgs, &"-I{incdir}")
+        add(args, &"-I{incdir}")
 
-    add(baseArgs, &"-I{builtinIncludeDir(command)}")
-    verboseEcho(&"Adding include directory: {builtinIncludeDir(command)}")
-
-    add(baseArgs, &"--nim_out={outdir}")
-    verboseEcho(&"Output directory: {outdir}")
+    add(args, &"-I{builtinIncludeDir(command)}")
 
     for proto in protos:
-        var args = baseArgs
         add(args, proto)
-        var options = {poStdErrToStdOut}
-        if verbose:
-            incl(options, poEchoCmd)
 
-        let env = newStringTable("NIMPB_BUILD_PLUGIN", "1", modeCaseSensitive)
+    var cmdline: string = quoteShell(command)
+    for arg in args:
+        cmdline &= " " & quoteShell(arg)
 
-        let process = startProcess(command, workingDir="", args=args, env=env,
-            options=options)
-        var outp = outputStream(process)
-        var outputData: string = ""
-        var line = newStringOfCap(120)
-        while true:
-            if outp.readLine(line):
-                add(outputData, line)
-                add(outputData, "\n")
-            elif not running(process):
-                break
-        var rc = peekExitCode(process)
-        close(process)
+    let (outp, rc) = execCmdEx(cmdline)
 
-        if rc != 0:
-            echo(outputData)
-            quit(QuitFailure)
-        else:
-            verboseEcho(outputData)
+    if rc != 0:
+        raise newException(Exception, outp)
 
+    processFileDescriptorSet(outputFilename, outdir)
 
-proc usage() {.noreturn.} =
-    echo(&"""
-{getAppFilename()} --out=OUTDIR [-IPATH [-IPATH]...] PROTOFILE...
-
-    --out       The output directory for the generated files
-    -I          Add a path to the set of include paths
-""")
-    quit(QuitFailure)
 
 when isMainModule:
-    if getEnv("NIMPB_BUILD_PLUGIN", "") == "1":
-        pluginMain()
-        quit(QuitSuccess)
+    proc usage() {.noreturn.} =
+        echo(&"""
+    {getAppFilename()} --out=OUTDIR [-IPATH [-IPATH]...] PROTOFILE...
+
+        --out       The output directory for the generated files
+        -I          Add a path to the set of include paths
+    """)
+        quit(QuitFailure)
 
     var includes: seq[string] = @[]
     var protos: seq[string] = @[]
     var outdir: string
-    var verbose = false
 
     if paramCount() == 0:
         usage()
@@ -130,8 +114,6 @@ when isMainModule:
             add(includes, param[2..^1])
         elif param.startsWith("--out="):
             outdir = param[6..^1]
-        elif param == "--verbose":
-            verbose = true
         elif param == "--help":
             usage()
         else:
@@ -145,4 +127,4 @@ when isMainModule:
         echo("error: no input files")
         quit(QuitFailure)
 
-    compileProtos(protos, outdir, includes, verbose)
+    compileProtos(protos, includes, outdir)

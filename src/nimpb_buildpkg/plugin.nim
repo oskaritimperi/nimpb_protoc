@@ -858,18 +858,17 @@ iterator genProcs(msg: Message): string =
         yield indent(&"result = read{msg.names}(pbs)", 4)
         yield ""
 
-proc processFile(filename: string, fdesc: google_protobuf_FileDescriptorProto,
-                 otherFiles: TableRef[string, ProtoFile]): ProcessedFile =
-    var (dir, name, _) = splitFile(filename)
+proc processFile(fdesc: google_protobuf_FileDescriptorProto): ProcessedFile =
+    var (dir, name, _) = splitFile(fdesc.name)
     var pbfilename = (dir / name) & "_pb.nim"
 
-    log(&"processing {filename}: {pbfilename}")
+    log(&"processing {fdesc.name}: {pbfilename}")
 
     new(result)
     result.name = pbfilename
     result.data = ""
 
-    let parsed = parseFile(filename, fdesc)
+    let parsed = parseFile(fdesc.name, fdesc)
 
     var hasMaps = false
     for message in parsed.messages:
@@ -919,28 +918,15 @@ proc processFile(filename: string, fdesc: google_protobuf_FileDescriptorProto,
             addLine(result.data, line)
         addLine(result.data, "")
 
-proc generateCode(request: google_protobuf_compiler_CodeGeneratorRequest, response: google_protobuf_compiler_CodeGeneratorResponse) =
-    let otherFiles = newTable[string, ProtoFile]()
+proc processFileDescriptorSet*(filename: string, outdir: string) =
+    let s = newProtobufStream(newFileStream(filename, fmRead))
 
-    for file in request.proto_file:
-        add(otherFiles, file.name, parseFile(file.name, file))
+    let fileSet = readgoogle_protobuf_FileDescriptorSet(s)
 
-    for filename in request.file_to_generate:
-        for fdesc in request.proto_file:
-            if fdesc.name == filename:
-                let results = processFile(filename, fdesc, otherFiles)
-                let f = newgoogle_protobuf_compiler_CodeGeneratorResponse_File()
-                setName(f, results.name)
-                setContent(f, results.data)
-                addFile(response, f)
+    for file in fileSet.file:
+        let parsedFile = processFile(file)
+        let fullPath = outdir / parsedFile.name
 
-proc pluginMain*() =
-    let pbsi = newProtobufStream(newFileStream(stdin))
-    let pbso = newProtobufStream(newFileStream(stdout))
+        createDir(parentDir(fullPath))
 
-    let request = readgoogle_protobuf_compiler_CodeGeneratorRequest(pbsi)
-    let response = newgoogle_protobuf_compiler_CodeGeneratorResponse()
-
-    generateCode(request, response)
-
-    writegoogle_protobuf_compiler_CodeGeneratorResponse(pbso, response)
+        writeFile(fullPath, parsedFile.data)
