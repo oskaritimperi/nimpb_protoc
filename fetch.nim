@@ -3,8 +3,13 @@ import os
 import osproc
 import strformat
 
+if paramCount() != 1:
+    echo(&"usage: {extractFilename(getAppFilename())} <version>")
+    quit(QuitFailure)
+
+var version = paramStr(1)
+
 const
-    Version = "3.5.1"
     BaseUrl = "https://github.com/google/protobuf/releases/download"
     Systems = [
         "linux-aarch_64",
@@ -15,7 +20,7 @@ const
     ]
 
 proc zipName(identifier: string): string =
-    &"protoc-{Version}-{identifier}.zip"
+    &"protoc-{version}-{identifier}.zip"
 
 proc exeSuffix(identifier: string): string =
     result = ""
@@ -34,13 +39,13 @@ proc downloadFile(url, target: string) =
 
 proc downloadRelease(identifier: string) =
     let
-        url = &"{BaseUrl}/v{Version}/{zipName(identifier)}"
+        url = &"{BaseUrl}/v{version}/{zipName(identifier)}"
         target = zipName(identifier)
     downloadFile(url, target)
 
 proc downloadSources() =
-    let url = &"https://github.com/google/protobuf/archive/v{Version}.zip"
-    downloadFile(url, &"v{Version}.zip")
+    let url = &"https://github.com/google/protobuf/archive/v{version}.zip"
+    downloadFile(url, &"v{version}.zip")
 
 proc extractCompiler(identifier: string) =
     echo(&"extracting compiler: {identifier}")
@@ -57,7 +62,7 @@ proc extractIncludes() =
 
 proc extractLicense() =
     echo("extracting LICENSE")
-    let args = @["-o", "-j", &"v{Version}.zip", &"protobuf-{Version}/LICENSE", "-d", "src/nimpb_buildpkg/protobuf"]
+    let args = @["-o", "-j", &"v{version}.zip", &"protobuf-{version}/LICENSE", "-d", "src/nimpb_buildpkg/protobuf"]
     discard execProcess("unzip", args, nil, {poStdErrToStdout, poUsePath})
 
 for system in Systems:
