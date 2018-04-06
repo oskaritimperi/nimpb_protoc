@@ -12,8 +12,6 @@ import plugin_pb
 
 import nimpb/nimpb
 
-import gen
-
 type
     Names = distinct seq[string]
 
@@ -24,8 +22,8 @@ type
     Field = ref object
         number: int
         name: string
-        label: FieldDescriptorProto_Label
-        ftype: FieldDescriptorProto_Type
+        label: google_protobuf_FieldDescriptorProto_Label
+        ftype: google_protobuf_FieldDescriptorProto_Type
         typeName: string
         packed: bool
         oneof: Oneof
@@ -46,7 +44,7 @@ type
         data: string
 
     ProtoFile = ref object
-        fdesc: FileDescriptorProto
+        fdesc: google_protobuf_FileDescriptorProto
         enums: seq[Enum]
         messages: seq[Message]
         syntax: Syntax
@@ -80,23 +78,23 @@ proc `&`(names: Names, s: string): Names =
     add(result, s)
 
 proc isRepeated(field: Field): bool =
-    result = field.label == FieldDescriptorProtoLabel.LabelRepeated
+    result = field.label == google_protobuf_FieldDescriptorProtoLabel.LabelRepeated
 
 proc isMessage(field: Field): bool =
-    result = field.ftype == FieldDescriptorProtoType.TypeMessage
+    result = field.ftype == google_protobuf_FieldDescriptorProtoType.TypeMessage
 
 proc isEnum(field: Field): bool =
-    result = field.ftype == FieldDescriptorProtoType.TypeEnum
+    result = field.ftype == google_protobuf_FieldDescriptorProtoType.TypeEnum
 
 proc isNumeric(field: Field): bool =
     case field.ftype
-    of FieldDescriptorProtoType.TypeDouble, FieldDescriptorProtoType.TypeFloat,
-       FieldDescriptorProtoType.TypeInt64, FieldDescriptorProtoType.TypeUInt64,
-       FieldDescriptorProtoType.TypeInt32, FieldDescriptorProtoType.TypeFixed64,
-       FieldDescriptorProtoType.TypeFixed32, FieldDescriptorProtoType.TypeBool,
-       FieldDescriptorProtoType.TypeUInt32, FieldDescriptorProtoType.TypeEnum,
-       FieldDescriptorProtoType.TypeSFixed32, FieldDescriptorProtoType.TypeSFixed64,
-       FieldDescriptorProtoType.TypeSInt32, FieldDescriptorProtoType.TypeSInt64:
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble, google_protobuf_FieldDescriptorProtoType.TypeFloat,
+       google_protobuf_FieldDescriptorProtoType.TypeInt64, google_protobuf_FieldDescriptorProtoType.TypeUInt64,
+       google_protobuf_FieldDescriptorProtoType.TypeInt32, google_protobuf_FieldDescriptorProtoType.TypeFixed64,
+       google_protobuf_FieldDescriptorProtoType.TypeFixed32, google_protobuf_FieldDescriptorProtoType.TypeBool,
+       google_protobuf_FieldDescriptorProtoType.TypeUInt32, google_protobuf_FieldDescriptorProtoType.TypeEnum,
+       google_protobuf_FieldDescriptorProtoType.TypeSFixed32, google_protobuf_FieldDescriptorProtoType.TypeSFixed64,
+       google_protobuf_FieldDescriptorProtoType.TypeSInt32, google_protobuf_FieldDescriptorProtoType.TypeSInt64:
        result = true
     else: discard
 
@@ -108,24 +106,24 @@ proc isMapEntry(field: Field): bool =
 
 proc nimTypeName(field: Field): string =
     case field.ftype
-    of FieldDescriptorProtoType.TypeDouble: result = "float64"
-    of FieldDescriptorProtoType.TypeFloat: result = "float32"
-    of FieldDescriptorProtoType.TypeInt64: result = "int64"
-    of FieldDescriptorProtoType.TypeUInt64: result = "uint64"
-    of FieldDescriptorProtoType.TypeInt32: result = "int32"
-    of FieldDescriptorProtoType.TypeFixed64: result = "uint64"
-    of FieldDescriptorProtoType.TypeFixed32: result = "uint32"
-    of FieldDescriptorProtoType.TypeBool: result = "bool"
-    of FieldDescriptorProtoType.TypeString: result = "string"
-    of FieldDescriptorProtoType.TypeGroup: result = ""
-    of FieldDescriptorProtoType.TypeMessage: result = field.typeName
-    of FieldDescriptorProtoType.TypeBytes: result = "bytes"
-    of FieldDescriptorProtoType.TypeUInt32: result = "uint32"
-    of FieldDescriptorProtoType.TypeEnum: result = field.typeName
-    of FieldDescriptorProtoType.TypeSFixed32: result = "int32"
-    of FieldDescriptorProtoType.TypeSFixed64: result = "int64"
-    of FieldDescriptorProtoType.TypeSInt32: result = "int32"
-    of FieldDescriptorProtoType.TypeSInt64: result = "int64"
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble: result = "float64"
+    of google_protobuf_FieldDescriptorProtoType.TypeFloat: result = "float32"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt64: result = "int64"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt64: result = "uint64"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt32: result = "int32"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed64: result = "uint64"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed32: result = "uint32"
+    of google_protobuf_FieldDescriptorProtoType.TypeBool: result = "bool"
+    of google_protobuf_FieldDescriptorProtoType.TypeString: result = "string"
+    of google_protobuf_FieldDescriptorProtoType.TypeGroup: result = ""
+    of google_protobuf_FieldDescriptorProtoType.TypeMessage: result = field.typeName
+    of google_protobuf_FieldDescriptorProtoType.TypeBytes: result = "bytes"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt32: result = "uint32"
+    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result = field.typeName
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed32: result = "int32"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result = "int64"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "int32"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "int64"
 
 proc mapKeyType(field: Field): string =
     for f in field.mapEntry.fields:
@@ -137,26 +135,26 @@ proc mapValueType(field: Field): string =
         if f.name == "value":
             return f.nimTypeName
 
-proc `$`(ft: FieldDescriptorProtoType): string =
+proc `$`(ft: google_protobuf_FieldDescriptorProtoType): string =
     case ft
-    of FieldDescriptorProtoType.TypeDouble: result = "Double"
-    of FieldDescriptorProtoType.TypeFloat: result = "Float"
-    of FieldDescriptorProtoType.TypeInt64: result = "Int64"
-    of FieldDescriptorProtoType.TypeUInt64: result = "UInt64"
-    of FieldDescriptorProtoType.TypeInt32: result = "Int32"
-    of FieldDescriptorProtoType.TypeFixed64: result = "Fixed64"
-    of FieldDescriptorProtoType.TypeFixed32: result = "Fixed32"
-    of FieldDescriptorProtoType.TypeBool: result = "Bool"
-    of FieldDescriptorProtoType.TypeString: result = "String"
-    of FieldDescriptorProtoType.TypeGroup: result = "Group"
-    of FieldDescriptorProtoType.TypeMessage: result = "Message"
-    of FieldDescriptorProtoType.TypeBytes: result = "Bytes"
-    of FieldDescriptorProtoType.TypeUInt32: result = "UInt32"
-    of FieldDescriptorProtoType.TypeEnum: result = "Enum"
-    of FieldDescriptorProtoType.TypeSFixed32: result = "SFixed32"
-    of FieldDescriptorProtoType.TypeSFixed64: result = "SFixed64"
-    of FieldDescriptorProtoType.TypeSInt32: result = "SInt32"
-    of FieldDescriptorProtoType.TypeSInt64: result = "SInt64"
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble: result = "Double"
+    of google_protobuf_FieldDescriptorProtoType.TypeFloat: result = "Float"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt64: result = "Int64"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt64: result = "UInt64"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt32: result = "Int32"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed64: result = "Fixed64"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed32: result = "Fixed32"
+    of google_protobuf_FieldDescriptorProtoType.TypeBool: result = "Bool"
+    of google_protobuf_FieldDescriptorProtoType.TypeString: result = "String"
+    of google_protobuf_FieldDescriptorProtoType.TypeGroup: result = "Group"
+    of google_protobuf_FieldDescriptorProtoType.TypeMessage: result = "Message"
+    of google_protobuf_FieldDescriptorProtoType.TypeBytes: result = "Bytes"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt32: result = "UInt32"
+    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result = "Enum"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed32: result = "SFixed32"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result = "SFixed64"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "SInt32"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "SInt64"
 
 proc defaultValue(field: Field): string =
     if isMapEntry(field):
@@ -165,46 +163,46 @@ proc defaultValue(field: Field): string =
         return "@[]"
 
     case field.ftype
-    of FieldDescriptorProtoType.TypeDouble: result = "0"
-    of FieldDescriptorProtoType.TypeFloat: result = "0"
-    of FieldDescriptorProtoType.TypeInt64: result = "0"
-    of FieldDescriptorProtoType.TypeUInt64: result = "0"
-    of FieldDescriptorProtoType.TypeInt32: result = "0"
-    of FieldDescriptorProtoType.TypeFixed64: result = "0"
-    of FieldDescriptorProtoType.TypeFixed32: result = "0"
-    of FieldDescriptorProtoType.TypeBool: result = "false"
-    of FieldDescriptorProtoType.TypeString: result = "\"\""
-    of FieldDescriptorProtoType.TypeGroup: result = ""
-    of FieldDescriptorProtoType.TypeMessage: result = "nil"
-    of FieldDescriptorProtoType.TypeBytes: result = "bytes(\"\")"
-    of FieldDescriptorProtoType.TypeUInt32: result = "0"
-    of FieldDescriptorProtoType.TypeEnum: result = &"{field.typeName}(0)"
-    of FieldDescriptorProtoType.TypeSFixed32: result = "0"
-    of FieldDescriptorProtoType.TypeSFixed64: result = "0"
-    of FieldDescriptorProtoType.TypeSInt32: result = "0"
-    of FieldDescriptorProtoType.TypeSInt64: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeFloat: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt64: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt64: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt32: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed64: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed32: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeBool: result = "false"
+    of google_protobuf_FieldDescriptorProtoType.TypeString: result = "\"\""
+    of google_protobuf_FieldDescriptorProtoType.TypeGroup: result = ""
+    of google_protobuf_FieldDescriptorProtoType.TypeMessage: result = "nil"
+    of google_protobuf_FieldDescriptorProtoType.TypeBytes: result = "bytes(\"\")"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt32: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result = &"{field.typeName}(0)"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed32: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "0"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "0"
 
 proc wiretypeStr(field: Field): string =
     result = "WireType."
     case field.ftype
-    of FieldDescriptorProtoType.TypeDouble: result &= "Fixed64"
-    of FieldDescriptorProtoType.TypeFloat: result &= "Fixed32"
-    of FieldDescriptorProtoType.TypeInt64: result &= "Varint"
-    of FieldDescriptorProtoType.TypeUInt64: result &= "Varint"
-    of FieldDescriptorProtoType.TypeInt32: result &= "Varint"
-    of FieldDescriptorProtoType.TypeFixed64: result &= "Fixed64"
-    of FieldDescriptorProtoType.TypeFixed32: result &= "Fixed32"
-    of FieldDescriptorProtoType.TypeBool: result &= "Varint"
-    of FieldDescriptorProtoType.TypeString: result &= "LengthDelimited"
-    of FieldDescriptorProtoType.TypeGroup: result &= ""
-    of FieldDescriptorProtoType.TypeMessage: result &= "LengthDelimited"
-    of FieldDescriptorProtoType.TypeBytes: result &= "LengthDelimited"
-    of FieldDescriptorProtoType.TypeUInt32: result &= "Varint"
-    of FieldDescriptorProtoType.TypeEnum: result &= &"Varint"
-    of FieldDescriptorProtoType.TypeSFixed32: result &= "Fixed32"
-    of FieldDescriptorProtoType.TypeSFixed64: result &= "Fixed64"
-    of FieldDescriptorProtoType.TypeSInt32: result &= "Varint"
-    of FieldDescriptorProtoType.TypeSInt64: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble: result &= "Fixed64"
+    of google_protobuf_FieldDescriptorProtoType.TypeFloat: result &= "Fixed32"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt64: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt64: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeInt32: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed64: result &= "Fixed64"
+    of google_protobuf_FieldDescriptorProtoType.TypeFixed32: result &= "Fixed32"
+    of google_protobuf_FieldDescriptorProtoType.TypeBool: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeString: result &= "LengthDelimited"
+    of google_protobuf_FieldDescriptorProtoType.TypeGroup: result &= ""
+    of google_protobuf_FieldDescriptorProtoType.TypeMessage: result &= "LengthDelimited"
+    of google_protobuf_FieldDescriptorProtoType.TypeBytes: result &= "LengthDelimited"
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt32: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeEnum: result &= &"Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed32: result &= "Fixed32"
+    of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result &= "Fixed64"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result &= "Varint"
+    of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result &= "Varint"
 
 proc fieldTypeStr(field: Field): string =
     result = "FieldType." & $field.ftype
@@ -250,13 +248,13 @@ proc sizeOfProc(field: Field): string =
     else:
         result = &"sizeOf{field.typeName}"
 
-proc newField(file: ProtoFile, message: Message, desc: FieldDescriptorProto): Field =
+proc newField(file: ProtoFile, message: Message, desc: google_protobuf_FieldDescriptorProto): Field =
     new(result)
 
     result.name = desc.name
     result.number = desc.number
     result.label = desc.label
-    result.ftype = desc.type
+    result.ftype = desc.ftype
     result.typeName = ""
     result.packed = false
     result.mapEntry = nil
@@ -304,7 +302,7 @@ proc newOneof(name: string): Oneof =
     result.fields = @[]
     result.name = name
 
-proc newMessage(file: ProtoFile, names: Names, desc: DescriptorProto): Message =
+proc newMessage(file: ProtoFile, names: Names, desc: google_protobuf_DescriptorProto): Message =
     new(result)
 
     result.names = names
@@ -332,7 +330,7 @@ proc fixMapEntry(file: ProtoFile, message: Message): bool =
                     field.mapEntry = msg
                     result = true
 
-proc newEnum(names: Names, desc: EnumDescriptorProto): Enum =
+proc newEnum(names: Names, desc: google_protobuf_EnumDescriptorProto): Enum =
     new(result)
 
     result.names = names & desc.name
@@ -349,8 +347,8 @@ proc newEnum(names: Names, desc: EnumDescriptorProto): Enum =
         system.cmp(x.number, y.number)
     )
 
-iterator messages(desc: DescriptorProto, names: Names): tuple[names: Names, desc: DescriptorProto] =
-    var stack: seq[tuple[names: Names, desc: DescriptorProto]] = @[]
+iterator messages(desc: google_protobuf_DescriptorProto, names: Names): tuple[names: Names, desc: google_protobuf_DescriptorProto] =
+    var stack: seq[tuple[names: Names, desc: google_protobuf_DescriptorProto]] = @[]
 
     for nested in desc.nested_type:
         add(stack, (names, nested))
@@ -364,7 +362,7 @@ iterator messages(desc: DescriptorProto, names: Names): tuple[names: Names, desc
         for desc in submsg.nested_type:
             add(stack, (subnames, desc))
 
-iterator messages(fdesc: FileDescriptorProto, names: Names): tuple[names: Names, desc: DescriptorProto] =
+iterator messages(fdesc: google_protobuf_FileDescriptorProto, names: Names): tuple[names: Names, desc: google_protobuf_DescriptorProto] =
     for desc in fdesc.message_type:
         let subnames = names & desc.name
         yield (subnames, desc)
@@ -447,7 +445,7 @@ iterator sortDependencies(messages: seq[Message]): Message =
         if name in byname:
             yield byname[name]
 
-proc parseFile(name: string, fdesc: FileDescriptorProto): ProtoFile =
+proc parseFile(name: string, fdesc: google_protobuf_FileDescriptorProto): ProtoFile =
     log(&"parsing {name}")
 
     new(result)
@@ -835,7 +833,7 @@ iterator genProcs(msg: Message): string =
         yield indent(&"result = read{msg.names}(pbs)", 4)
         yield ""
 
-proc processFile(filename: string, fdesc: FileDescriptorProto,
+proc processFile(filename: string, fdesc: google_protobuf_FileDescriptorProto,
                  otherFiles: TableRef[string, ProtoFile]): ProcessedFile =
     var (dir, name, _) = splitFile(filename)
     var pbfilename = (dir / name) & "_pb.nim"
@@ -896,7 +894,7 @@ proc processFile(filename: string, fdesc: FileDescriptorProto,
             addLine(result.data, line)
         addLine(result.data, "")
 
-proc generateCode(request: CodeGeneratorRequest, response: CodeGeneratorResponse) =
+proc generateCode(request: google_protobuf_compiler_CodeGeneratorRequest, response: google_protobuf_compiler_CodeGeneratorResponse) =
     let otherFiles = newTable[string, ProtoFile]()
 
     for file in request.proto_file:
@@ -906,7 +904,7 @@ proc generateCode(request: CodeGeneratorRequest, response: CodeGeneratorResponse
         for fdesc in request.proto_file:
             if fdesc.name == filename:
                 let results = processFile(filename, fdesc, otherFiles)
-                let f = newCodeGeneratorResponse_File()
+                let f = newgoogle_protobuf_compiler_CodeGeneratorResponse_File()
                 setName(f, results.name)
                 setContent(f, results.data)
                 addFile(response, f)
@@ -915,9 +913,9 @@ proc pluginMain*() =
     let pbsi = newProtobufStream(newFileStream(stdin))
     let pbso = newProtobufStream(newFileStream(stdout))
 
-    let request = readCodeGeneratorRequest(pbsi)
-    let response = newCodeGeneratorResponse()
+    let request = readgoogle_protobuf_compiler_CodeGeneratorRequest(pbsi)
+    let response = newgoogle_protobuf_compiler_CodeGeneratorResponse()
 
     generateCode(request, response)
 
-    writeCodeGeneratorResponse(pbso, response)
+    writegoogle_protobuf_compiler_CodeGeneratorResponse(pbso, response)
