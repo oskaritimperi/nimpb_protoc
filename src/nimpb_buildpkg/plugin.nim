@@ -310,7 +310,7 @@ proc newMessage(file: ProtoFile, names: Names, desc: google_protobuf_DescriptorP
     result.oneofs = @[]
     result.mapEntry = false
 
-    if hasMapEntry(desc.options):
+    if hasOptions(desc) and hasMapEntry(desc.options):
         result.mapEntry = desc.options.mapEntry
 
     log(&"newMessage {$result.names}")
