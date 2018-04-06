@@ -8,7 +8,6 @@ import strutils
 import tables
 
 import descriptor_pb
-import plugin_pb
 
 import nimpb/nimpb
 
