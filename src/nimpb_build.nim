@@ -39,6 +39,7 @@ proc findCompiler(): string =
         paths = @[
             getAppDir() / "src" / "nimpb_buildpkg" / "protobuf",
             getAppDir() / "nimpb_buildpkg" / "protobuf",
+            parentDir(currentSourcePath()) / "nimpb_buildpkg" / "protobuf",
         ]
 
     for path in paths:
