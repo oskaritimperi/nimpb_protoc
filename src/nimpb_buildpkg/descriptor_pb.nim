@@ -47,10 +47,12 @@ type
     google_protobuf_FileDescriptorSet* = ref google_protobuf_FileDescriptorSetObj
     google_protobuf_FileDescriptorSetObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         file: seq[google_protobuf_FileDescriptorProto]
     google_protobuf_FileDescriptorProto* = ref google_protobuf_FileDescriptorProtoObj
     google_protobuf_FileDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         package: string
         dependency: seq[string]
@@ -66,6 +68,7 @@ type
     google_protobuf_DescriptorProto* = ref google_protobuf_DescriptorProtoObj
     google_protobuf_DescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         field: seq[google_protobuf_FieldDescriptorProto]
         extension: seq[google_protobuf_FieldDescriptorProto]
@@ -79,21 +82,25 @@ type
     google_protobuf_DescriptorProto_ReservedRange* = ref google_protobuf_DescriptorProto_ReservedRangeObj
     google_protobuf_DescriptorProto_ReservedRangeObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         start: int32
         fend: int32
     google_protobuf_DescriptorProto_ExtensionRange* = ref google_protobuf_DescriptorProto_ExtensionRangeObj
     google_protobuf_DescriptorProto_ExtensionRangeObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         start: int32
         fend: int32
         options: google_protobuf_ExtensionRangeOptions
     google_protobuf_ExtensionRangeOptions* = ref google_protobuf_ExtensionRangeOptionsObj
     google_protobuf_ExtensionRangeOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_FieldDescriptorProto* = ref google_protobuf_FieldDescriptorProtoObj
     google_protobuf_FieldDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         number: int32
         label: google_protobuf_FieldDescriptorProto_Label
@@ -107,11 +114,13 @@ type
     google_protobuf_OneofDescriptorProto* = ref google_protobuf_OneofDescriptorProtoObj
     google_protobuf_OneofDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         options: google_protobuf_OneofOptions
     google_protobuf_EnumDescriptorProto* = ref google_protobuf_EnumDescriptorProtoObj
     google_protobuf_EnumDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         value: seq[google_protobuf_EnumValueDescriptorProto]
         options: google_protobuf_EnumOptions
@@ -120,23 +129,27 @@ type
     google_protobuf_EnumDescriptorProto_EnumReservedRange* = ref google_protobuf_EnumDescriptorProto_EnumReservedRangeObj
     google_protobuf_EnumDescriptorProto_EnumReservedRangeObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         start: int32
         fend: int32
     google_protobuf_EnumValueDescriptorProto* = ref google_protobuf_EnumValueDescriptorProtoObj
     google_protobuf_EnumValueDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         number: int32
         options: google_protobuf_EnumValueOptions
     google_protobuf_ServiceDescriptorProto* = ref google_protobuf_ServiceDescriptorProtoObj
     google_protobuf_ServiceDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         fmethod: seq[google_protobuf_MethodDescriptorProto]
         options: google_protobuf_ServiceOptions
     google_protobuf_MethodDescriptorProto* = ref google_protobuf_MethodDescriptorProtoObj
     google_protobuf_MethodDescriptorProtoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: string
         input_type: string
         output_type: string
@@ -146,6 +159,7 @@ type
     google_protobuf_FileOptions* = ref google_protobuf_FileOptionsObj
     google_protobuf_FileOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         java_package: string
         java_outer_classname: string
         java_multiple_files: bool
@@ -168,6 +182,7 @@ type
     google_protobuf_MessageOptions* = ref google_protobuf_MessageOptionsObj
     google_protobuf_MessageOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         message_set_wire_format: bool
         no_standard_descriptor_accessor: bool
         deprecated: bool
@@ -176,6 +191,7 @@ type
     google_protobuf_FieldOptions* = ref google_protobuf_FieldOptionsObj
     google_protobuf_FieldOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         ctype: google_protobuf_FieldOptions_CType
         packed: bool
         jstype: google_protobuf_FieldOptions_JSType
@@ -186,32 +202,38 @@ type
     google_protobuf_OneofOptions* = ref google_protobuf_OneofOptionsObj
     google_protobuf_OneofOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_EnumOptions* = ref google_protobuf_EnumOptionsObj
     google_protobuf_EnumOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         allow_alias: bool
         deprecated: bool
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_EnumValueOptions* = ref google_protobuf_EnumValueOptionsObj
     google_protobuf_EnumValueOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         deprecated: bool
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_ServiceOptions* = ref google_protobuf_ServiceOptionsObj
     google_protobuf_ServiceOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         deprecated: bool
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_MethodOptions* = ref google_protobuf_MethodOptionsObj
     google_protobuf_MethodOptionsObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         deprecated: bool
         idempotency_level: google_protobuf_MethodOptions_IdempotencyLevel
         uninterpreted_option: seq[google_protobuf_UninterpretedOption]
     google_protobuf_UninterpretedOption* = ref google_protobuf_UninterpretedOptionObj
     google_protobuf_UninterpretedOptionObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name: seq[google_protobuf_UninterpretedOption_NamePart]
         identifier_value: string
         positive_int_value: uint64
@@ -222,15 +244,18 @@ type
     google_protobuf_UninterpretedOption_NamePart* = ref google_protobuf_UninterpretedOption_NamePartObj
     google_protobuf_UninterpretedOption_NamePartObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         name_part: string
         is_extension: bool
     google_protobuf_SourceCodeInfo* = ref google_protobuf_SourceCodeInfoObj
     google_protobuf_SourceCodeInfoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         location: seq[google_protobuf_SourceCodeInfo_Location]
     google_protobuf_SourceCodeInfo_Location* = ref google_protobuf_SourceCodeInfo_LocationObj
     google_protobuf_SourceCodeInfo_LocationObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         path: seq[int32]
         span: seq[int32]
         leading_comments: string
@@ -239,146 +264,175 @@ type
     google_protobuf_GeneratedCodeInfo* = ref google_protobuf_GeneratedCodeInfoObj
     google_protobuf_GeneratedCodeInfoObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         annotation: seq[google_protobuf_GeneratedCodeInfo_Annotation]
     google_protobuf_GeneratedCodeInfo_Annotation* = ref google_protobuf_GeneratedCodeInfo_AnnotationObj
     google_protobuf_GeneratedCodeInfo_AnnotationObj* = object of RootObj
         hasField: IntSet
+        unknownFields: seq[UnknownField]
         path: seq[int32]
         source_file: string
         begin: int32
         fend: int32
 
 proc newgoogle_protobuf_UninterpretedOption_NamePart*(): google_protobuf_UninterpretedOption_NamePart
+proc newgoogle_protobuf_UninterpretedOption_NamePart*(data: string): google_protobuf_UninterpretedOption_NamePart
 proc writegoogle_protobuf_UninterpretedOption_NamePart*(stream: ProtobufStream, message: google_protobuf_UninterpretedOption_NamePart)
 proc readgoogle_protobuf_UninterpretedOption_NamePart*(stream: ProtobufStream): google_protobuf_UninterpretedOption_NamePart
 proc sizeOfgoogle_protobuf_UninterpretedOption_NamePart*(message: google_protobuf_UninterpretedOption_NamePart): uint64
 
 proc newgoogle_protobuf_UninterpretedOption*(): google_protobuf_UninterpretedOption
+proc newgoogle_protobuf_UninterpretedOption*(data: string): google_protobuf_UninterpretedOption
 proc writegoogle_protobuf_UninterpretedOption*(stream: ProtobufStream, message: google_protobuf_UninterpretedOption)
 proc readgoogle_protobuf_UninterpretedOption*(stream: ProtobufStream): google_protobuf_UninterpretedOption
 proc sizeOfgoogle_protobuf_UninterpretedOption*(message: google_protobuf_UninterpretedOption): uint64
 
 proc newgoogle_protobuf_EnumValueOptions*(): google_protobuf_EnumValueOptions
+proc newgoogle_protobuf_EnumValueOptions*(data: string): google_protobuf_EnumValueOptions
 proc writegoogle_protobuf_EnumValueOptions*(stream: ProtobufStream, message: google_protobuf_EnumValueOptions)
 proc readgoogle_protobuf_EnumValueOptions*(stream: ProtobufStream): google_protobuf_EnumValueOptions
 proc sizeOfgoogle_protobuf_EnumValueOptions*(message: google_protobuf_EnumValueOptions): uint64
 
 proc newgoogle_protobuf_EnumValueDescriptorProto*(): google_protobuf_EnumValueDescriptorProto
+proc newgoogle_protobuf_EnumValueDescriptorProto*(data: string): google_protobuf_EnumValueDescriptorProto
 proc writegoogle_protobuf_EnumValueDescriptorProto*(stream: ProtobufStream, message: google_protobuf_EnumValueDescriptorProto)
 proc readgoogle_protobuf_EnumValueDescriptorProto*(stream: ProtobufStream): google_protobuf_EnumValueDescriptorProto
 proc sizeOfgoogle_protobuf_EnumValueDescriptorProto*(message: google_protobuf_EnumValueDescriptorProto): uint64
 
 proc newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(): google_protobuf_EnumDescriptorProto_EnumReservedRange
+proc newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(data: string): google_protobuf_EnumDescriptorProto_EnumReservedRange
 proc writegoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(stream: ProtobufStream, message: google_protobuf_EnumDescriptorProto_EnumReservedRange)
 proc readgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(stream: ProtobufStream): google_protobuf_EnumDescriptorProto_EnumReservedRange
 proc sizeOfgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(message: google_protobuf_EnumDescriptorProto_EnumReservedRange): uint64
 
 proc newgoogle_protobuf_EnumOptions*(): google_protobuf_EnumOptions
+proc newgoogle_protobuf_EnumOptions*(data: string): google_protobuf_EnumOptions
 proc writegoogle_protobuf_EnumOptions*(stream: ProtobufStream, message: google_protobuf_EnumOptions)
 proc readgoogle_protobuf_EnumOptions*(stream: ProtobufStream): google_protobuf_EnumOptions
 proc sizeOfgoogle_protobuf_EnumOptions*(message: google_protobuf_EnumOptions): uint64
 
 proc newgoogle_protobuf_EnumDescriptorProto*(): google_protobuf_EnumDescriptorProto
+proc newgoogle_protobuf_EnumDescriptorProto*(data: string): google_protobuf_EnumDescriptorProto
 proc writegoogle_protobuf_EnumDescriptorProto*(stream: ProtobufStream, message: google_protobuf_EnumDescriptorProto)
 proc readgoogle_protobuf_EnumDescriptorProto*(stream: ProtobufStream): google_protobuf_EnumDescriptorProto
 proc sizeOfgoogle_protobuf_EnumDescriptorProto*(message: google_protobuf_EnumDescriptorProto): uint64
 
 proc newgoogle_protobuf_ExtensionRangeOptions*(): google_protobuf_ExtensionRangeOptions
+proc newgoogle_protobuf_ExtensionRangeOptions*(data: string): google_protobuf_ExtensionRangeOptions
 proc writegoogle_protobuf_ExtensionRangeOptions*(stream: ProtobufStream, message: google_protobuf_ExtensionRangeOptions)
 proc readgoogle_protobuf_ExtensionRangeOptions*(stream: ProtobufStream): google_protobuf_ExtensionRangeOptions
 proc sizeOfgoogle_protobuf_ExtensionRangeOptions*(message: google_protobuf_ExtensionRangeOptions): uint64
 
 proc newgoogle_protobuf_SourceCodeInfo_Location*(): google_protobuf_SourceCodeInfo_Location
+proc newgoogle_protobuf_SourceCodeInfo_Location*(data: string): google_protobuf_SourceCodeInfo_Location
 proc writegoogle_protobuf_SourceCodeInfo_Location*(stream: ProtobufStream, message: google_protobuf_SourceCodeInfo_Location)
 proc readgoogle_protobuf_SourceCodeInfo_Location*(stream: ProtobufStream): google_protobuf_SourceCodeInfo_Location
 proc sizeOfgoogle_protobuf_SourceCodeInfo_Location*(message: google_protobuf_SourceCodeInfo_Location): uint64
 
 proc newgoogle_protobuf_SourceCodeInfo*(): google_protobuf_SourceCodeInfo
+proc newgoogle_protobuf_SourceCodeInfo*(data: string): google_protobuf_SourceCodeInfo
 proc writegoogle_protobuf_SourceCodeInfo*(stream: ProtobufStream, message: google_protobuf_SourceCodeInfo)
 proc readgoogle_protobuf_SourceCodeInfo*(stream: ProtobufStream): google_protobuf_SourceCodeInfo
 proc sizeOfgoogle_protobuf_SourceCodeInfo*(message: google_protobuf_SourceCodeInfo): uint64
 
 proc newgoogle_protobuf_FieldOptions*(): google_protobuf_FieldOptions
+proc newgoogle_protobuf_FieldOptions*(data: string): google_protobuf_FieldOptions
 proc writegoogle_protobuf_FieldOptions*(stream: ProtobufStream, message: google_protobuf_FieldOptions)
 proc readgoogle_protobuf_FieldOptions*(stream: ProtobufStream): google_protobuf_FieldOptions
 proc sizeOfgoogle_protobuf_FieldOptions*(message: google_protobuf_FieldOptions): uint64
 
 proc newgoogle_protobuf_FieldDescriptorProto*(): google_protobuf_FieldDescriptorProto
+proc newgoogle_protobuf_FieldDescriptorProto*(data: string): google_protobuf_FieldDescriptorProto
 proc writegoogle_protobuf_FieldDescriptorProto*(stream: ProtobufStream, message: google_protobuf_FieldDescriptorProto)
 proc readgoogle_protobuf_FieldDescriptorProto*(stream: ProtobufStream): google_protobuf_FieldDescriptorProto
 proc sizeOfgoogle_protobuf_FieldDescriptorProto*(message: google_protobuf_FieldDescriptorProto): uint64
 
 proc newgoogle_protobuf_DescriptorProto_ExtensionRange*(): google_protobuf_DescriptorProto_ExtensionRange
+proc newgoogle_protobuf_DescriptorProto_ExtensionRange*(data: string): google_protobuf_DescriptorProto_ExtensionRange
 proc writegoogle_protobuf_DescriptorProto_ExtensionRange*(stream: ProtobufStream, message: google_protobuf_DescriptorProto_ExtensionRange)
 proc readgoogle_protobuf_DescriptorProto_ExtensionRange*(stream: ProtobufStream): google_protobuf_DescriptorProto_ExtensionRange
 proc sizeOfgoogle_protobuf_DescriptorProto_ExtensionRange*(message: google_protobuf_DescriptorProto_ExtensionRange): uint64
 
 proc newgoogle_protobuf_MessageOptions*(): google_protobuf_MessageOptions
+proc newgoogle_protobuf_MessageOptions*(data: string): google_protobuf_MessageOptions
 proc writegoogle_protobuf_MessageOptions*(stream: ProtobufStream, message: google_protobuf_MessageOptions)
 proc readgoogle_protobuf_MessageOptions*(stream: ProtobufStream): google_protobuf_MessageOptions
 proc sizeOfgoogle_protobuf_MessageOptions*(message: google_protobuf_MessageOptions): uint64
 
 proc newgoogle_protobuf_OneofOptions*(): google_protobuf_OneofOptions
+proc newgoogle_protobuf_OneofOptions*(data: string): google_protobuf_OneofOptions
 proc writegoogle_protobuf_OneofOptions*(stream: ProtobufStream, message: google_protobuf_OneofOptions)
 proc readgoogle_protobuf_OneofOptions*(stream: ProtobufStream): google_protobuf_OneofOptions
 proc sizeOfgoogle_protobuf_OneofOptions*(message: google_protobuf_OneofOptions): uint64
 
 proc newgoogle_protobuf_OneofDescriptorProto*(): google_protobuf_OneofDescriptorProto
+proc newgoogle_protobuf_OneofDescriptorProto*(data: string): google_protobuf_OneofDescriptorProto
 proc writegoogle_protobuf_OneofDescriptorProto*(stream: ProtobufStream, message: google_protobuf_OneofDescriptorProto)
 proc readgoogle_protobuf_OneofDescriptorProto*(stream: ProtobufStream): google_protobuf_OneofDescriptorProto
 proc sizeOfgoogle_protobuf_OneofDescriptorProto*(message: google_protobuf_OneofDescriptorProto): uint64
 
 proc newgoogle_protobuf_DescriptorProto_ReservedRange*(): google_protobuf_DescriptorProto_ReservedRange
+proc newgoogle_protobuf_DescriptorProto_ReservedRange*(data: string): google_protobuf_DescriptorProto_ReservedRange
 proc writegoogle_protobuf_DescriptorProto_ReservedRange*(stream: ProtobufStream, message: google_protobuf_DescriptorProto_ReservedRange)
 proc readgoogle_protobuf_DescriptorProto_ReservedRange*(stream: ProtobufStream): google_protobuf_DescriptorProto_ReservedRange
 proc sizeOfgoogle_protobuf_DescriptorProto_ReservedRange*(message: google_protobuf_DescriptorProto_ReservedRange): uint64
 
 proc newgoogle_protobuf_DescriptorProto*(): google_protobuf_DescriptorProto
+proc newgoogle_protobuf_DescriptorProto*(data: string): google_protobuf_DescriptorProto
 proc writegoogle_protobuf_DescriptorProto*(stream: ProtobufStream, message: google_protobuf_DescriptorProto)
 proc readgoogle_protobuf_DescriptorProto*(stream: ProtobufStream): google_protobuf_DescriptorProto
 proc sizeOfgoogle_protobuf_DescriptorProto*(message: google_protobuf_DescriptorProto): uint64
 
 proc newgoogle_protobuf_FileOptions*(): google_protobuf_FileOptions
+proc newgoogle_protobuf_FileOptions*(data: string): google_protobuf_FileOptions
 proc writegoogle_protobuf_FileOptions*(stream: ProtobufStream, message: google_protobuf_FileOptions)
 proc readgoogle_protobuf_FileOptions*(stream: ProtobufStream): google_protobuf_FileOptions
 proc sizeOfgoogle_protobuf_FileOptions*(message: google_protobuf_FileOptions): uint64
 
 proc newgoogle_protobuf_ServiceOptions*(): google_protobuf_ServiceOptions
+proc newgoogle_protobuf_ServiceOptions*(data: string): google_protobuf_ServiceOptions
 proc writegoogle_protobuf_ServiceOptions*(stream: ProtobufStream, message: google_protobuf_ServiceOptions)
 proc readgoogle_protobuf_ServiceOptions*(stream: ProtobufStream): google_protobuf_ServiceOptions
 proc sizeOfgoogle_protobuf_ServiceOptions*(message: google_protobuf_ServiceOptions): uint64
 
 proc newgoogle_protobuf_MethodOptions*(): google_protobuf_MethodOptions
+proc newgoogle_protobuf_MethodOptions*(data: string): google_protobuf_MethodOptions
 proc writegoogle_protobuf_MethodOptions*(stream: ProtobufStream, message: google_protobuf_MethodOptions)
 proc readgoogle_protobuf_MethodOptions*(stream: ProtobufStream): google_protobuf_MethodOptions
 proc sizeOfgoogle_protobuf_MethodOptions*(message: google_protobuf_MethodOptions): uint64
 
 proc newgoogle_protobuf_MethodDescriptorProto*(): google_protobuf_MethodDescriptorProto
+proc newgoogle_protobuf_MethodDescriptorProto*(data: string): google_protobuf_MethodDescriptorProto
 proc writegoogle_protobuf_MethodDescriptorProto*(stream: ProtobufStream, message: google_protobuf_MethodDescriptorProto)
 proc readgoogle_protobuf_MethodDescriptorProto*(stream: ProtobufStream): google_protobuf_MethodDescriptorProto
 proc sizeOfgoogle_protobuf_MethodDescriptorProto*(message: google_protobuf_MethodDescriptorProto): uint64
 
 proc newgoogle_protobuf_ServiceDescriptorProto*(): google_protobuf_ServiceDescriptorProto
+proc newgoogle_protobuf_ServiceDescriptorProto*(data: string): google_protobuf_ServiceDescriptorProto
 proc writegoogle_protobuf_ServiceDescriptorProto*(stream: ProtobufStream, message: google_protobuf_ServiceDescriptorProto)
 proc readgoogle_protobuf_ServiceDescriptorProto*(stream: ProtobufStream): google_protobuf_ServiceDescriptorProto
 proc sizeOfgoogle_protobuf_ServiceDescriptorProto*(message: google_protobuf_ServiceDescriptorProto): uint64
 
 proc newgoogle_protobuf_FileDescriptorProto*(): google_protobuf_FileDescriptorProto
+proc newgoogle_protobuf_FileDescriptorProto*(data: string): google_protobuf_FileDescriptorProto
 proc writegoogle_protobuf_FileDescriptorProto*(stream: ProtobufStream, message: google_protobuf_FileDescriptorProto)
 proc readgoogle_protobuf_FileDescriptorProto*(stream: ProtobufStream): google_protobuf_FileDescriptorProto
 proc sizeOfgoogle_protobuf_FileDescriptorProto*(message: google_protobuf_FileDescriptorProto): uint64
 
 proc newgoogle_protobuf_FileDescriptorSet*(): google_protobuf_FileDescriptorSet
+proc newgoogle_protobuf_FileDescriptorSet*(data: string): google_protobuf_FileDescriptorSet
 proc writegoogle_protobuf_FileDescriptorSet*(stream: ProtobufStream, message: google_protobuf_FileDescriptorSet)
 proc readgoogle_protobuf_FileDescriptorSet*(stream: ProtobufStream): google_protobuf_FileDescriptorSet
 proc sizeOfgoogle_protobuf_FileDescriptorSet*(message: google_protobuf_FileDescriptorSet): uint64
 
 proc newgoogle_protobuf_GeneratedCodeInfo_Annotation*(): google_protobuf_GeneratedCodeInfo_Annotation
+proc newgoogle_protobuf_GeneratedCodeInfo_Annotation*(data: string): google_protobuf_GeneratedCodeInfo_Annotation
 proc writegoogle_protobuf_GeneratedCodeInfo_Annotation*(stream: ProtobufStream, message: google_protobuf_GeneratedCodeInfo_Annotation)
 proc readgoogle_protobuf_GeneratedCodeInfo_Annotation*(stream: ProtobufStream): google_protobuf_GeneratedCodeInfo_Annotation
 proc sizeOfgoogle_protobuf_GeneratedCodeInfo_Annotation*(message: google_protobuf_GeneratedCodeInfo_Annotation): uint64
 
 proc newgoogle_protobuf_GeneratedCodeInfo*(): google_protobuf_GeneratedCodeInfo
+proc newgoogle_protobuf_GeneratedCodeInfo*(data: string): google_protobuf_GeneratedCodeInfo
 proc writegoogle_protobuf_GeneratedCodeInfo*(stream: ProtobufStream, message: google_protobuf_GeneratedCodeInfo)
 proc readgoogle_protobuf_GeneratedCodeInfo*(stream: ProtobufStream): google_protobuf_GeneratedCodeInfo
 proc sizeOfgoogle_protobuf_GeneratedCodeInfo*(message: google_protobuf_GeneratedCodeInfo): uint64
@@ -386,6 +440,7 @@ proc sizeOfgoogle_protobuf_GeneratedCodeInfo*(message: google_protobuf_Generated
 proc newgoogle_protobuf_UninterpretedOption_NamePart*(): google_protobuf_UninterpretedOption_NamePart =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name_part = ""
     result.is_extension = false
 
@@ -436,6 +491,7 @@ proc writegoogle_protobuf_UninterpretedOption_NamePart*(stream: ProtobufStream, 
         writeString(stream, message.name_part, 1)
     if hasis_extension(message):
         writeBool(stream, message.is_extension, 2)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_UninterpretedOption_NamePart*(stream: ProtobufStream): google_protobuf_UninterpretedOption_NamePart =
     result = newgoogle_protobuf_UninterpretedOption_NamePart()
@@ -452,7 +508,7 @@ proc readgoogle_protobuf_UninterpretedOption_NamePart*(stream: ProtobufStream): 
         of 2:
             expectWireType(wireType, WireType.Varint)
             setis_extension(result, readBool(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_UninterpretedOption_NamePart): string =
     let
@@ -471,6 +527,7 @@ proc newgoogle_protobuf_UninterpretedOption_NamePart*(data: string): google_prot
 proc newgoogle_protobuf_UninterpretedOption*(): google_protobuf_UninterpretedOption =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = @[]
     result.identifier_value = ""
     result.positive_int_value = 0
@@ -640,6 +697,7 @@ proc writegoogle_protobuf_UninterpretedOption*(stream: ProtobufStream, message: 
         writeBytes(stream, message.string_value, 7)
     if hasaggregate_value(message):
         writeString(stream, message.aggregate_value, 8)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_UninterpretedOption*(stream: ProtobufStream): google_protobuf_UninterpretedOption =
     result = newgoogle_protobuf_UninterpretedOption()
@@ -652,11 +710,8 @@ proc readgoogle_protobuf_UninterpretedOption*(stream: ProtobufStream): google_pr
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 2:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addname(result, readgoogle_protobuf_UninterpretedOption_NamePart(pbs))
+            let data = readLengthDelimited(stream)
+            addname(result, newgoogle_protobuf_UninterpretedOption_NamePart(data))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
             setidentifier_value(result, readString(stream))
@@ -675,7 +730,7 @@ proc readgoogle_protobuf_UninterpretedOption*(stream: ProtobufStream): google_pr
         of 8:
             expectWireType(wireType, WireType.LengthDelimited)
             setaggregate_value(result, readString(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_UninterpretedOption): string =
     let
@@ -694,6 +749,7 @@ proc newgoogle_protobuf_UninterpretedOption*(data: string): google_protobuf_Unin
 proc newgoogle_protobuf_EnumValueOptions*(): google_protobuf_EnumValueOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.deprecated = false
     result.uninterpreted_option = @[]
 
@@ -748,6 +804,7 @@ proc writegoogle_protobuf_EnumValueOptions*(stream: ProtobufStream, message: goo
         writeBool(stream, message.deprecated, 1)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_EnumValueOptions*(stream: ProtobufStream): google_protobuf_EnumValueOptions =
     result = newgoogle_protobuf_EnumValueOptions()
@@ -763,12 +820,9 @@ proc readgoogle_protobuf_EnumValueOptions*(stream: ProtobufStream): google_proto
             setdeprecated(result, readBool(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_EnumValueOptions): string =
     let
@@ -787,6 +841,7 @@ proc newgoogle_protobuf_EnumValueOptions*(data: string): google_protobuf_EnumVal
 proc newgoogle_protobuf_EnumValueDescriptorProto*(): google_protobuf_EnumValueDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.number = 0
     result.options = nil
@@ -860,6 +915,7 @@ proc writegoogle_protobuf_EnumValueDescriptorProto*(stream: ProtobufStream, mess
         writeInt32(stream, message.number, 2)
     if hasoptions(message):
         writeMessage(stream, message.options, 3)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_EnumValueDescriptorProto*(stream: ProtobufStream): google_protobuf_EnumValueDescriptorProto =
     result = newgoogle_protobuf_EnumValueDescriptorProto()
@@ -878,12 +934,9 @@ proc readgoogle_protobuf_EnumValueDescriptorProto*(stream: ProtobufStream): goog
             setnumber(result, readInt32(stream))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_EnumValueOptions(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_EnumValueOptions(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_EnumValueDescriptorProto): string =
     let
@@ -902,6 +955,7 @@ proc newgoogle_protobuf_EnumValueDescriptorProto*(data: string): google_protobuf
 proc newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(): google_protobuf_EnumDescriptorProto_EnumReservedRange =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.start = 0
     result.fend = 0
 
@@ -952,6 +1006,7 @@ proc writegoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(stream: Protobu
         writeInt32(stream, message.start, 1)
     if hasfend(message):
         writeInt32(stream, message.fend, 2)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(stream: ProtobufStream): google_protobuf_EnumDescriptorProto_EnumReservedRange =
     result = newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange()
@@ -968,7 +1023,7 @@ proc readgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(stream: Protobuf
         of 2:
             expectWireType(wireType, WireType.Varint)
             setfend(result, readInt32(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_EnumDescriptorProto_EnumReservedRange): string =
     let
@@ -987,6 +1042,7 @@ proc newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange*(data: string): go
 proc newgoogle_protobuf_EnumOptions*(): google_protobuf_EnumOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.allow_alias = false
     result.deprecated = false
     result.uninterpreted_option = @[]
@@ -1064,6 +1120,7 @@ proc writegoogle_protobuf_EnumOptions*(stream: ProtobufStream, message: google_p
         writeBool(stream, message.deprecated, 3)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_EnumOptions*(stream: ProtobufStream): google_protobuf_EnumOptions =
     result = newgoogle_protobuf_EnumOptions()
@@ -1082,12 +1139,9 @@ proc readgoogle_protobuf_EnumOptions*(stream: ProtobufStream): google_protobuf_E
             setdeprecated(result, readBool(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_EnumOptions): string =
     let
@@ -1106,6 +1160,7 @@ proc newgoogle_protobuf_EnumOptions*(data: string): google_protobuf_EnumOptions 
 proc newgoogle_protobuf_EnumDescriptorProto*(): google_protobuf_EnumDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.value = @[]
     result.options = nil
@@ -1237,6 +1292,7 @@ proc writegoogle_protobuf_EnumDescriptorProto*(stream: ProtobufStream, message: 
         writeMessage(stream, value, 4)
     for value in message.reserved_name:
         writeString(stream, value, 5)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_EnumDescriptorProto*(stream: ProtobufStream): google_protobuf_EnumDescriptorProto =
     result = newgoogle_protobuf_EnumDescriptorProto()
@@ -1252,29 +1308,20 @@ proc readgoogle_protobuf_EnumDescriptorProto*(stream: ProtobufStream): google_pr
             setname(result, readString(stream))
         of 2:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addvalue(result, readgoogle_protobuf_EnumValueDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addvalue(result, newgoogle_protobuf_EnumValueDescriptorProto(data))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_EnumOptions(pbs))
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_EnumOptions(data))
         of 4:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addreserved_range(result, readgoogle_protobuf_EnumDescriptorProto_EnumReservedRange(pbs))
+            let data = readLengthDelimited(stream)
+            addreserved_range(result, newgoogle_protobuf_EnumDescriptorProto_EnumReservedRange(data))
         of 5:
             expectWireType(wireType, WireType.LengthDelimited)
             addreserved_name(result, readString(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_EnumDescriptorProto): string =
     let
@@ -1293,6 +1340,7 @@ proc newgoogle_protobuf_EnumDescriptorProto*(data: string): google_protobuf_Enum
 proc newgoogle_protobuf_ExtensionRangeOptions*(): google_protobuf_ExtensionRangeOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.uninterpreted_option = @[]
 
 proc clearuninterpreted_option*(message: google_protobuf_ExtensionRangeOptions) =
@@ -1324,6 +1372,7 @@ proc sizeOfgoogle_protobuf_ExtensionRangeOptions*(message: google_protobuf_Exten
 proc writegoogle_protobuf_ExtensionRangeOptions*(stream: ProtobufStream, message: google_protobuf_ExtensionRangeOptions) =
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_ExtensionRangeOptions*(stream: ProtobufStream): google_protobuf_ExtensionRangeOptions =
     result = newgoogle_protobuf_ExtensionRangeOptions()
@@ -1336,12 +1385,9 @@ proc readgoogle_protobuf_ExtensionRangeOptions*(stream: ProtobufStream): google_
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_ExtensionRangeOptions): string =
     let
@@ -1360,6 +1406,7 @@ proc newgoogle_protobuf_ExtensionRangeOptions*(data: string): google_protobuf_Ex
 proc newgoogle_protobuf_SourceCodeInfo_Location*(): google_protobuf_SourceCodeInfo_Location =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.path = @[]
     result.span = @[]
     result.leading_comments = ""
@@ -1497,6 +1544,7 @@ proc writegoogle_protobuf_SourceCodeInfo_Location*(stream: ProtobufStream, messa
         writeString(stream, message.trailing_comments, 4)
     for value in message.leading_detached_comments:
         writeString(stream, value, 6)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_SourceCodeInfo_Location*(stream: ProtobufStream): google_protobuf_SourceCodeInfo_Location =
     result = newgoogle_protobuf_SourceCodeInfo_Location()
@@ -1544,7 +1592,7 @@ proc readgoogle_protobuf_SourceCodeInfo_Location*(stream: ProtobufStream): googl
         of 6:
             expectWireType(wireType, WireType.LengthDelimited)
             addleading_detached_comments(result, readString(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_SourceCodeInfo_Location): string =
     let
@@ -1563,6 +1611,7 @@ proc newgoogle_protobuf_SourceCodeInfo_Location*(data: string): google_protobuf_
 proc newgoogle_protobuf_SourceCodeInfo*(): google_protobuf_SourceCodeInfo =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.location = @[]
 
 proc clearlocation*(message: google_protobuf_SourceCodeInfo) =
@@ -1594,6 +1643,7 @@ proc sizeOfgoogle_protobuf_SourceCodeInfo*(message: google_protobuf_SourceCodeIn
 proc writegoogle_protobuf_SourceCodeInfo*(stream: ProtobufStream, message: google_protobuf_SourceCodeInfo) =
     for value in message.location:
         writeMessage(stream, value, 1)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_SourceCodeInfo*(stream: ProtobufStream): google_protobuf_SourceCodeInfo =
     result = newgoogle_protobuf_SourceCodeInfo()
@@ -1606,12 +1656,9 @@ proc readgoogle_protobuf_SourceCodeInfo*(stream: ProtobufStream): google_protobu
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 1:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addlocation(result, readgoogle_protobuf_SourceCodeInfo_Location(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            addlocation(result, newgoogle_protobuf_SourceCodeInfo_Location(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_SourceCodeInfo): string =
     let
@@ -1630,16 +1677,17 @@ proc newgoogle_protobuf_SourceCodeInfo*(data: string): google_protobuf_SourceCod
 proc newgoogle_protobuf_FieldOptions*(): google_protobuf_FieldOptions =
     new(result)
     result.hasField = initIntSet()
-    result.ctype = google_protobuf_FieldOptions_CType(0)
+    result.unknownFields = @[]
+    result.ctype = google_protobuf_FieldOptions_CType.STRING
     result.packed = false
-    result.jstype = google_protobuf_FieldOptions_JSType(0)
+    result.jstype = google_protobuf_FieldOptions_JSType.JS_NORMAL
     result.lazy = false
     result.deprecated = false
     result.weak = false
     result.uninterpreted_option = @[]
 
 proc clearctype*(message: google_protobuf_FieldOptions) =
-    message.ctype = google_protobuf_FieldOptions_CType(0)
+    message.ctype = google_protobuf_FieldOptions_CType.STRING
     excl(message.hasField, [1])
 
 proc hasctype*(message: google_protobuf_FieldOptions): bool =
@@ -1673,7 +1721,7 @@ proc `packed=`*(message: google_protobuf_FieldOptions, value: bool) {.inline.} =
     setpacked(message, value)
 
 proc clearjstype*(message: google_protobuf_FieldOptions) =
-    message.jstype = google_protobuf_FieldOptions_JSType(0)
+    message.jstype = google_protobuf_FieldOptions_JSType.JS_NORMAL
     excl(message.hasField, [6])
 
 proc hasjstype*(message: google_protobuf_FieldOptions): bool =
@@ -1799,6 +1847,7 @@ proc writegoogle_protobuf_FieldOptions*(stream: ProtobufStream, message: google_
         writeBool(stream, message.weak, 10)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_FieldOptions*(stream: ProtobufStream): google_protobuf_FieldOptions =
     result = newgoogle_protobuf_FieldOptions()
@@ -1829,12 +1878,9 @@ proc readgoogle_protobuf_FieldOptions*(stream: ProtobufStream): google_protobuf_
             setweak(result, readBool(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_FieldOptions): string =
     let
@@ -1853,10 +1899,11 @@ proc newgoogle_protobuf_FieldOptions*(data: string): google_protobuf_FieldOption
 proc newgoogle_protobuf_FieldDescriptorProto*(): google_protobuf_FieldDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.number = 0
-    result.label = cast[google_protobuf_FieldDescriptorProto_Label](0)
-    result.ftype = cast[google_protobuf_FieldDescriptorProto_Type](0)
+    result.label = google_protobuf_FieldDescriptorProto_Label.LABEL_OPTIONAL
+    result.ftype = google_protobuf_FieldDescriptorProto_Type.TYPE_DOUBLE
     result.type_name = ""
     result.extendee = ""
     result.default_value = ""
@@ -1899,7 +1946,7 @@ proc `number=`*(message: google_protobuf_FieldDescriptorProto, value: int32) {.i
     setnumber(message, value)
 
 proc clearlabel*(message: google_protobuf_FieldDescriptorProto) =
-    message.label = cast[google_protobuf_FieldDescriptorProto_Label](0)
+    message.label = google_protobuf_FieldDescriptorProto_Label.LABEL_OPTIONAL
     excl(message.hasField, [4])
 
 proc haslabel*(message: google_protobuf_FieldDescriptorProto): bool =
@@ -1916,7 +1963,7 @@ proc `label=`*(message: google_protobuf_FieldDescriptorProto, value: google_prot
     setlabel(message, value)
 
 proc clearftype*(message: google_protobuf_FieldDescriptorProto) =
-    message.ftype = cast[google_protobuf_FieldDescriptorProto_Type](0)
+    message.ftype = google_protobuf_FieldDescriptorProto_Type.TYPE_DOUBLE
     excl(message.hasField, [5])
 
 proc hasftype*(message: google_protobuf_FieldDescriptorProto): bool =
@@ -2087,6 +2134,7 @@ proc writegoogle_protobuf_FieldDescriptorProto*(stream: ProtobufStream, message:
         writeString(stream, message.json_name, 10)
     if hasoptions(message):
         writeMessage(stream, message.options, 8)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_FieldDescriptorProto*(stream: ProtobufStream): google_protobuf_FieldDescriptorProto =
     result = newgoogle_protobuf_FieldDescriptorProto()
@@ -2126,12 +2174,9 @@ proc readgoogle_protobuf_FieldDescriptorProto*(stream: ProtobufStream): google_p
             setjson_name(result, readString(stream))
         of 8:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_FieldOptions(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_FieldOptions(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_FieldDescriptorProto): string =
     let
@@ -2150,6 +2195,7 @@ proc newgoogle_protobuf_FieldDescriptorProto*(data: string): google_protobuf_Fie
 proc newgoogle_protobuf_DescriptorProto_ExtensionRange*(): google_protobuf_DescriptorProto_ExtensionRange =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.start = 0
     result.fend = 0
     result.options = nil
@@ -2223,6 +2269,7 @@ proc writegoogle_protobuf_DescriptorProto_ExtensionRange*(stream: ProtobufStream
         writeInt32(stream, message.fend, 2)
     if hasoptions(message):
         writeMessage(stream, message.options, 3)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_DescriptorProto_ExtensionRange*(stream: ProtobufStream): google_protobuf_DescriptorProto_ExtensionRange =
     result = newgoogle_protobuf_DescriptorProto_ExtensionRange()
@@ -2241,12 +2288,9 @@ proc readgoogle_protobuf_DescriptorProto_ExtensionRange*(stream: ProtobufStream)
             setfend(result, readInt32(stream))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_ExtensionRangeOptions(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_ExtensionRangeOptions(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_DescriptorProto_ExtensionRange): string =
     let
@@ -2265,6 +2309,7 @@ proc newgoogle_protobuf_DescriptorProto_ExtensionRange*(data: string): google_pr
 proc newgoogle_protobuf_MessageOptions*(): google_protobuf_MessageOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.message_set_wire_format = false
     result.no_standard_descriptor_accessor = false
     result.deprecated = false
@@ -2388,6 +2433,7 @@ proc writegoogle_protobuf_MessageOptions*(stream: ProtobufStream, message: googl
         writeBool(stream, message.map_entry, 7)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_MessageOptions*(stream: ProtobufStream): google_protobuf_MessageOptions =
     result = newgoogle_protobuf_MessageOptions()
@@ -2412,12 +2458,9 @@ proc readgoogle_protobuf_MessageOptions*(stream: ProtobufStream): google_protobu
             setmap_entry(result, readBool(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_MessageOptions): string =
     let
@@ -2436,6 +2479,7 @@ proc newgoogle_protobuf_MessageOptions*(data: string): google_protobuf_MessageOp
 proc newgoogle_protobuf_OneofOptions*(): google_protobuf_OneofOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.uninterpreted_option = @[]
 
 proc clearuninterpreted_option*(message: google_protobuf_OneofOptions) =
@@ -2467,6 +2511,7 @@ proc sizeOfgoogle_protobuf_OneofOptions*(message: google_protobuf_OneofOptions):
 proc writegoogle_protobuf_OneofOptions*(stream: ProtobufStream, message: google_protobuf_OneofOptions) =
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_OneofOptions*(stream: ProtobufStream): google_protobuf_OneofOptions =
     result = newgoogle_protobuf_OneofOptions()
@@ -2479,12 +2524,9 @@ proc readgoogle_protobuf_OneofOptions*(stream: ProtobufStream): google_protobuf_
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_OneofOptions): string =
     let
@@ -2503,6 +2545,7 @@ proc newgoogle_protobuf_OneofOptions*(data: string): google_protobuf_OneofOption
 proc newgoogle_protobuf_OneofDescriptorProto*(): google_protobuf_OneofDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.options = nil
 
@@ -2553,6 +2596,7 @@ proc writegoogle_protobuf_OneofDescriptorProto*(stream: ProtobufStream, message:
         writeString(stream, message.name, 1)
     if hasoptions(message):
         writeMessage(stream, message.options, 2)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_OneofDescriptorProto*(stream: ProtobufStream): google_protobuf_OneofDescriptorProto =
     result = newgoogle_protobuf_OneofDescriptorProto()
@@ -2568,12 +2612,9 @@ proc readgoogle_protobuf_OneofDescriptorProto*(stream: ProtobufStream): google_p
             setname(result, readString(stream))
         of 2:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_OneofOptions(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_OneofOptions(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_OneofDescriptorProto): string =
     let
@@ -2592,6 +2633,7 @@ proc newgoogle_protobuf_OneofDescriptorProto*(data: string): google_protobuf_One
 proc newgoogle_protobuf_DescriptorProto_ReservedRange*(): google_protobuf_DescriptorProto_ReservedRange =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.start = 0
     result.fend = 0
 
@@ -2642,6 +2684,7 @@ proc writegoogle_protobuf_DescriptorProto_ReservedRange*(stream: ProtobufStream,
         writeInt32(stream, message.start, 1)
     if hasfend(message):
         writeInt32(stream, message.fend, 2)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_DescriptorProto_ReservedRange*(stream: ProtobufStream): google_protobuf_DescriptorProto_ReservedRange =
     result = newgoogle_protobuf_DescriptorProto_ReservedRange()
@@ -2658,7 +2701,7 @@ proc readgoogle_protobuf_DescriptorProto_ReservedRange*(stream: ProtobufStream):
         of 2:
             expectWireType(wireType, WireType.Varint)
             setfend(result, readInt32(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_DescriptorProto_ReservedRange): string =
     let
@@ -2677,6 +2720,7 @@ proc newgoogle_protobuf_DescriptorProto_ReservedRange*(data: string): google_pro
 proc newgoogle_protobuf_DescriptorProto*(): google_protobuf_DescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.field = @[]
     result.extension = @[]
@@ -2943,6 +2987,7 @@ proc writegoogle_protobuf_DescriptorProto*(stream: ProtobufStream, message: goog
         writeMessage(stream, value, 9)
     for value in message.reserved_name:
         writeString(stream, value, 10)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_DescriptorProto*(stream: ProtobufStream): google_protobuf_DescriptorProto =
     result = newgoogle_protobuf_DescriptorProto()
@@ -2958,64 +3003,40 @@ proc readgoogle_protobuf_DescriptorProto*(stream: ProtobufStream): google_protob
             setname(result, readString(stream))
         of 2:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addfield(result, readgoogle_protobuf_FieldDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addfield(result, newgoogle_protobuf_FieldDescriptorProto(data))
         of 6:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addextension(result, readgoogle_protobuf_FieldDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addextension(result, newgoogle_protobuf_FieldDescriptorProto(data))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addnested_type(result, readgoogle_protobuf_DescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addnested_type(result, newgoogle_protobuf_DescriptorProto(data))
         of 4:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addenum_type(result, readgoogle_protobuf_EnumDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addenum_type(result, newgoogle_protobuf_EnumDescriptorProto(data))
         of 5:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addextension_range(result, readgoogle_protobuf_DescriptorProto_ExtensionRange(pbs))
+            let data = readLengthDelimited(stream)
+            addextension_range(result, newgoogle_protobuf_DescriptorProto_ExtensionRange(data))
         of 8:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addoneof_decl(result, readgoogle_protobuf_OneofDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addoneof_decl(result, newgoogle_protobuf_OneofDescriptorProto(data))
         of 7:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_MessageOptions(pbs))
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_MessageOptions(data))
         of 9:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addreserved_range(result, readgoogle_protobuf_DescriptorProto_ReservedRange(pbs))
+            let data = readLengthDelimited(stream)
+            addreserved_range(result, newgoogle_protobuf_DescriptorProto_ReservedRange(data))
         of 10:
             expectWireType(wireType, WireType.LengthDelimited)
             addreserved_name(result, readString(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_DescriptorProto): string =
     let
@@ -3034,12 +3055,13 @@ proc newgoogle_protobuf_DescriptorProto*(data: string): google_protobuf_Descript
 proc newgoogle_protobuf_FileOptions*(): google_protobuf_FileOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.java_package = ""
     result.java_outer_classname = ""
     result.java_multiple_files = false
     result.java_generate_equals_and_hash = false
     result.java_string_check_utf8 = false
-    result.optimize_for = cast[google_protobuf_FileOptions_OptimizeMode](0)
+    result.optimize_for = google_protobuf_FileOptions_OptimizeMode.SPEED
     result.go_package = ""
     result.cc_generic_services = false
     result.java_generic_services = false
@@ -3140,7 +3162,7 @@ proc `java_string_check_utf8=`*(message: google_protobuf_FileOptions, value: boo
     setjava_string_check_utf8(message, value)
 
 proc clearoptimize_for*(message: google_protobuf_FileOptions) =
-    message.optimize_for = cast[google_protobuf_FileOptions_OptimizeMode](0)
+    message.optimize_for = google_protobuf_FileOptions_OptimizeMode.SPEED
     excl(message.hasField, [9])
 
 proc hasoptimize_for*(message: google_protobuf_FileOptions): bool =
@@ -3479,6 +3501,7 @@ proc writegoogle_protobuf_FileOptions*(stream: ProtobufStream, message: google_p
         writeString(stream, message.php_namespace, 41)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_FileOptions*(stream: ProtobufStream): google_protobuf_FileOptions =
     result = newgoogle_protobuf_FileOptions()
@@ -3545,12 +3568,9 @@ proc readgoogle_protobuf_FileOptions*(stream: ProtobufStream): google_protobuf_F
             setphp_namespace(result, readString(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_FileOptions): string =
     let
@@ -3569,6 +3589,7 @@ proc newgoogle_protobuf_FileOptions*(data: string): google_protobuf_FileOptions 
 proc newgoogle_protobuf_ServiceOptions*(): google_protobuf_ServiceOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.deprecated = false
     result.uninterpreted_option = @[]
 
@@ -3623,6 +3644,7 @@ proc writegoogle_protobuf_ServiceOptions*(stream: ProtobufStream, message: googl
         writeBool(stream, message.deprecated, 33)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_ServiceOptions*(stream: ProtobufStream): google_protobuf_ServiceOptions =
     result = newgoogle_protobuf_ServiceOptions()
@@ -3638,12 +3660,9 @@ proc readgoogle_protobuf_ServiceOptions*(stream: ProtobufStream): google_protobu
             setdeprecated(result, readBool(stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_ServiceOptions): string =
     let
@@ -3662,8 +3681,9 @@ proc newgoogle_protobuf_ServiceOptions*(data: string): google_protobuf_ServiceOp
 proc newgoogle_protobuf_MethodOptions*(): google_protobuf_MethodOptions =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.deprecated = false
-    result.idempotency_level = google_protobuf_MethodOptions_IdempotencyLevel(0)
+    result.idempotency_level = google_protobuf_MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN
     result.uninterpreted_option = @[]
 
 proc cleardeprecated*(message: google_protobuf_MethodOptions) =
@@ -3684,7 +3704,7 @@ proc `deprecated=`*(message: google_protobuf_MethodOptions, value: bool) {.inlin
     setdeprecated(message, value)
 
 proc clearidempotency_level*(message: google_protobuf_MethodOptions) =
-    message.idempotency_level = google_protobuf_MethodOptions_IdempotencyLevel(0)
+    message.idempotency_level = google_protobuf_MethodOptions_IdempotencyLevel.IDEMPOTENCY_UNKNOWN
     excl(message.hasField, [34])
 
 proc hasidempotency_level*(message: google_protobuf_MethodOptions): bool =
@@ -3739,6 +3759,7 @@ proc writegoogle_protobuf_MethodOptions*(stream: ProtobufStream, message: google
         writeEnum(stream, message.idempotency_level, 34)
     for value in message.uninterpreted_option:
         writeMessage(stream, value, 999)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_MethodOptions*(stream: ProtobufStream): google_protobuf_MethodOptions =
     result = newgoogle_protobuf_MethodOptions()
@@ -3757,12 +3778,9 @@ proc readgoogle_protobuf_MethodOptions*(stream: ProtobufStream): google_protobuf
             setidempotency_level(result, readEnum[google_protobuf_MethodOptions_IdempotencyLevel](stream))
         of 999:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            adduninterpreted_option(result, readgoogle_protobuf_UninterpretedOption(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            adduninterpreted_option(result, newgoogle_protobuf_UninterpretedOption(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_MethodOptions): string =
     let
@@ -3781,6 +3799,7 @@ proc newgoogle_protobuf_MethodOptions*(data: string): google_protobuf_MethodOpti
 proc newgoogle_protobuf_MethodDescriptorProto*(): google_protobuf_MethodDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.input_type = ""
     result.output_type = ""
@@ -3923,6 +3942,7 @@ proc writegoogle_protobuf_MethodDescriptorProto*(stream: ProtobufStream, message
         writeBool(stream, message.client_streaming, 5)
     if hasserver_streaming(message):
         writeBool(stream, message.server_streaming, 6)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_MethodDescriptorProto*(stream: ProtobufStream): google_protobuf_MethodDescriptorProto =
     result = newgoogle_protobuf_MethodDescriptorProto()
@@ -3944,18 +3964,15 @@ proc readgoogle_protobuf_MethodDescriptorProto*(stream: ProtobufStream): google_
             setoutput_type(result, readString(stream))
         of 4:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_MethodOptions(pbs))
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_MethodOptions(data))
         of 5:
             expectWireType(wireType, WireType.Varint)
             setclient_streaming(result, readBool(stream))
         of 6:
             expectWireType(wireType, WireType.Varint)
             setserver_streaming(result, readBool(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_MethodDescriptorProto): string =
     let
@@ -3974,6 +3991,7 @@ proc newgoogle_protobuf_MethodDescriptorProto*(data: string): google_protobuf_Me
 proc newgoogle_protobuf_ServiceDescriptorProto*(): google_protobuf_ServiceDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.fmethod = @[]
     result.options = nil
@@ -4051,6 +4069,7 @@ proc writegoogle_protobuf_ServiceDescriptorProto*(stream: ProtobufStream, messag
         writeMessage(stream, value, 2)
     if hasoptions(message):
         writeMessage(stream, message.options, 3)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_ServiceDescriptorProto*(stream: ProtobufStream): google_protobuf_ServiceDescriptorProto =
     result = newgoogle_protobuf_ServiceDescriptorProto()
@@ -4066,19 +4085,13 @@ proc readgoogle_protobuf_ServiceDescriptorProto*(stream: ProtobufStream): google
             setname(result, readString(stream))
         of 2:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addfmethod(result, readgoogle_protobuf_MethodDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addfmethod(result, newgoogle_protobuf_MethodDescriptorProto(data))
         of 3:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_ServiceOptions(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_ServiceOptions(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_ServiceDescriptorProto): string =
     let
@@ -4097,6 +4110,7 @@ proc newgoogle_protobuf_ServiceDescriptorProto*(data: string): google_protobuf_S
 proc newgoogle_protobuf_FileDescriptorProto*(): google_protobuf_FileDescriptorProto =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.name = ""
     result.package = ""
     result.dependency = @[]
@@ -4405,6 +4419,7 @@ proc writegoogle_protobuf_FileDescriptorProto*(stream: ProtobufStream, message: 
         writeMessage(stream, message.source_code_info, 9)
     if hassyntax(message):
         writeString(stream, message.syntax, 12)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_FileDescriptorProto*(stream: ProtobufStream): google_protobuf_FileDescriptorProto =
     result = newgoogle_protobuf_FileDescriptorProto()
@@ -4454,50 +4469,32 @@ proc readgoogle_protobuf_FileDescriptorProto*(stream: ProtobufStream): google_pr
                 addweak_dependency(result, readInt32(stream))
         of 4:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addmessage_type(result, readgoogle_protobuf_DescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addmessage_type(result, newgoogle_protobuf_DescriptorProto(data))
         of 5:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addenum_type(result, readgoogle_protobuf_EnumDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addenum_type(result, newgoogle_protobuf_EnumDescriptorProto(data))
         of 6:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addservice(result, readgoogle_protobuf_ServiceDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addservice(result, newgoogle_protobuf_ServiceDescriptorProto(data))
         of 7:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addextension(result, readgoogle_protobuf_FieldDescriptorProto(pbs))
+            let data = readLengthDelimited(stream)
+            addextension(result, newgoogle_protobuf_FieldDescriptorProto(data))
         of 8:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setoptions(result, readgoogle_protobuf_FileOptions(pbs))
+            let data = readLengthDelimited(stream)
+            setoptions(result, newgoogle_protobuf_FileOptions(data))
         of 9:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            setsource_code_info(result, readgoogle_protobuf_SourceCodeInfo(pbs))
+            let data = readLengthDelimited(stream)
+            setsource_code_info(result, newgoogle_protobuf_SourceCodeInfo(data))
         of 12:
             expectWireType(wireType, WireType.LengthDelimited)
             setsyntax(result, readString(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_FileDescriptorProto): string =
     let
@@ -4516,6 +4513,7 @@ proc newgoogle_protobuf_FileDescriptorProto*(data: string): google_protobuf_File
 proc newgoogle_protobuf_FileDescriptorSet*(): google_protobuf_FileDescriptorSet =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.file = @[]
 
 proc clearfile*(message: google_protobuf_FileDescriptorSet) =
@@ -4547,6 +4545,7 @@ proc sizeOfgoogle_protobuf_FileDescriptorSet*(message: google_protobuf_FileDescr
 proc writegoogle_protobuf_FileDescriptorSet*(stream: ProtobufStream, message: google_protobuf_FileDescriptorSet) =
     for value in message.file:
         writeMessage(stream, value, 1)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_FileDescriptorSet*(stream: ProtobufStream): google_protobuf_FileDescriptorSet =
     result = newgoogle_protobuf_FileDescriptorSet()
@@ -4559,12 +4558,9 @@ proc readgoogle_protobuf_FileDescriptorSet*(stream: ProtobufStream): google_prot
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 1:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addfile(result, readgoogle_protobuf_FileDescriptorProto(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            addfile(result, newgoogle_protobuf_FileDescriptorProto(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_FileDescriptorSet): string =
     let
@@ -4583,6 +4579,7 @@ proc newgoogle_protobuf_FileDescriptorSet*(data: string): google_protobuf_FileDe
 proc newgoogle_protobuf_GeneratedCodeInfo_Annotation*(): google_protobuf_GeneratedCodeInfo_Annotation =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.path = @[]
     result.source_file = ""
     result.begin = 0
@@ -4686,6 +4683,7 @@ proc writegoogle_protobuf_GeneratedCodeInfo_Annotation*(stream: ProtobufStream, 
         writeInt32(stream, message.begin, 3)
     if hasfend(message):
         writeInt32(stream, message.fend, 4)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_GeneratedCodeInfo_Annotation*(stream: ProtobufStream): google_protobuf_GeneratedCodeInfo_Annotation =
     result = newgoogle_protobuf_GeneratedCodeInfo_Annotation()
@@ -4719,7 +4717,7 @@ proc readgoogle_protobuf_GeneratedCodeInfo_Annotation*(stream: ProtobufStream): 
         of 4:
             expectWireType(wireType, WireType.Varint)
             setfend(result, readInt32(stream))
-        else: skipField(stream, wireType)
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_GeneratedCodeInfo_Annotation): string =
     let
@@ -4738,6 +4736,7 @@ proc newgoogle_protobuf_GeneratedCodeInfo_Annotation*(data: string): google_prot
 proc newgoogle_protobuf_GeneratedCodeInfo*(): google_protobuf_GeneratedCodeInfo =
     new(result)
     result.hasField = initIntSet()
+    result.unknownFields = @[]
     result.annotation = @[]
 
 proc clearannotation*(message: google_protobuf_GeneratedCodeInfo) =
@@ -4769,6 +4768,7 @@ proc sizeOfgoogle_protobuf_GeneratedCodeInfo*(message: google_protobuf_Generated
 proc writegoogle_protobuf_GeneratedCodeInfo*(stream: ProtobufStream, message: google_protobuf_GeneratedCodeInfo) =
     for value in message.annotation:
         writeMessage(stream, value, 1)
+    writeUnknownFields(stream, message.unknownFields)
 
 proc readgoogle_protobuf_GeneratedCodeInfo*(stream: ProtobufStream): google_protobuf_GeneratedCodeInfo =
     result = newgoogle_protobuf_GeneratedCodeInfo()
@@ -4781,12 +4781,9 @@ proc readgoogle_protobuf_GeneratedCodeInfo*(stream: ProtobufStream): google_prot
             raise newException(InvalidFieldNumberError, "Invalid field number: 0")
         of 1:
             expectWireType(wireType, WireType.LengthDelimited)
-            let
-                size = readVarint(stream)
-                data = safeReadStr(stream, int(size))
-                pbs = newProtobufStream(newStringStream(data))
-            addannotation(result, readgoogle_protobuf_GeneratedCodeInfo_Annotation(pbs))
-        else: skipField(stream, wireType)
+            let data = readLengthDelimited(stream)
+            addannotation(result, newgoogle_protobuf_GeneratedCodeInfo_Annotation(data))
+        else: readUnknownField(stream, tag, result.unknownFields)
 
 proc serialize*(message: google_protobuf_GeneratedCodeInfo): string =
     let
