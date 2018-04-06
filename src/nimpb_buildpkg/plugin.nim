@@ -725,22 +725,16 @@ iterator genReadMessageProc(msg: Message): string =
                     yield indent(&"{setter}(result, {field.readProc}(stream))", 16)
                 elif isMessage(field):
                     yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
-                    yield indent("let", 12)
-                    yield indent("size = readVarint(stream)", 16)
-                    yield indent("data = safeReadStr(stream, int(size))", 16)
-                    yield indent("pbs = newProtobufStream(newStringStream(data))", 16)
-                    yield indent(&"{setter}(result, {field.readProc}(pbs))", 12)
+                    yield indent(&"let data = readLengthDelimited(stream)", 12)
+                    yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
                 else:
                     yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
                     yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
             else:
                 yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
                 if isMessage(field):
-                    yield indent("let", 12)
-                    yield indent("size = readVarint(stream)", 16)
-                    yield indent("data = safeReadStr(stream, int(size))", 16)
-                    yield indent("pbs = newProtobufStream(newStringStream(data))", 16)
-                    yield indent(&"{setter}(result, {field.readProc}(pbs))", 12)
+                    yield indent("let data = readLengthDelimited(stream)", 12)
+                    yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
                 else:
                     yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
         yield indent("else: skipField(stream, wireType)", 8)
@@ -802,8 +796,11 @@ iterator genSizeOfMessageProc(msg: Message): string =
     yield ""
 
 iterator genMessageProcForwards(msg: Message): string =
+    # TODO: can we be more intelligent and only forward declare the minimum set
+    # of procs?
     if not isMapEntry(msg):
         yield &"proc new{msg.names}*(): {msg.names}"
+        yield &"proc new{msg.names}*(data: string): {msg.names}"
         yield &"proc write{msg.names}*(stream: ProtobufStream, message: {msg.names})"
         yield &"proc read{msg.names}*(stream: ProtobufStream): {msg.names}"
         yield &"proc sizeOf{msg.names}*(message: {msg.names}): uint64"
