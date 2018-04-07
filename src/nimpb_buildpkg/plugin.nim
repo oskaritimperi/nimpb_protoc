@@ -51,6 +51,7 @@ type
         enums: seq[Enum]
         messages: seq[Message]
         syntax: Syntax
+        dependencies: seq[ProtoFile]
 
     Syntax {.pure.} = enum
         Proto2
@@ -180,6 +181,15 @@ proc defaultValue(ftype: google_protobuf_FieldDescriptorProto_Type): string =
     of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "0"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "0"
 
+proc findEnum(file: ProtoFile, typeName: string): Enum =
+    for e in file.enums:
+        if $e.names == typeName:
+            return e
+    for dep in file.dependencies:
+        result = findEnum(dep, typeName)
+        if result != nil:
+            break
+
 proc defaultValue(field: Field): string =
     if field.defaultValue != nil:
         if isEnum(field):
@@ -193,10 +203,11 @@ proc defaultValue(field: Field): string =
     elif isRepeated(field):
         return "@[]"
     elif isEnum(field):
-        for e in field.message.file.enums:
-            if $e.names == field.typeName:
-                result = e.defaultValue
-                break
+        let e = findEnum(field.message.file, field.typeName)
+        if e != nil:
+            result = e.defaultValue
+        else:
+            result = &"cast[{field.typeName}](0)"
     else:
         result = defaultValue(field.ftype)
 
@@ -478,6 +489,7 @@ proc parseFile(name: string, fdesc: google_protobuf_FileDescriptorProto): ProtoF
     result.fdesc = fdesc
     result.messages = @[]
     result.enums = @[]
+    result.dependencies = @[]
 
     if hasSyntax(fdesc):
         if fdesc.syntax == "proto2":
@@ -857,7 +869,7 @@ iterator genProcs(msg: Message): string =
         yield indent(&"result = read{msg.names}(pbs)", 4)
         yield ""
 
-proc processFile(fdesc: google_protobuf_FileDescriptorProto): ProcessedFile =
+proc processFile(fdesc: google_protobuf_FileDescriptorProto, otherFiles: TableRef[string, ProtoFile]): ProcessedFile =
     var (dir, name, _) = splitFile(fdesc.name)
     var pbfilename = (dir / name) & "_pb.nim"
 
@@ -868,6 +880,10 @@ proc processFile(fdesc: google_protobuf_FileDescriptorProto): ProcessedFile =
     result.data = ""
 
     let parsed = parseFile(fdesc.name, fdesc)
+
+    for dep in fdesc.dependency:
+        if dep in otherFiles:
+            add(parsed.dependencies, otherFiles[dep])
 
     var hasMaps = false
     for message in parsed.messages:
@@ -917,15 +933,29 @@ proc processFile(fdesc: google_protobuf_FileDescriptorProto): ProcessedFile =
             addLine(result.data, line)
         addLine(result.data, "")
 
-proc processFileDescriptorSet*(filename: string, outdir: string) =
+proc processFileDescriptorSet*(filename: string, outdir: string,
+                               protos: openArray[string]) =
     let s = newProtobufStream(newFileStream(filename, fmRead))
 
     let fileSet = readgoogle_protobuf_FileDescriptorSet(s)
 
+    var otherFiles = newTable[string, ProtoFile]()
+
     for file in fileSet.file:
-        let parsedFile = processFile(file)
-        let fullPath = outdir / parsedFile.name
+        add(otherFiles, file.name, parseFile(file.name, file))
 
-        createDir(parentDir(fullPath))
+    # Protoc does not provide full paths for files in FileDescriptorSet. So it
+    # can be that fileSet.file.name might match any file in protos. So we will
+    # try to match the bare name and the named joined with the path of the first
+    # file.
+    let basePath = parentDir(protos[0])
 
-        writeFile(fullPath, parsedFile.data)
+    for file in fileSet.file:
+        if (file.name in protos) or ((basePath / file.name) in protos):
+            let processedFile = processFile(file, otherFiles)
+
+            let fullPath = outdir / processedFile.name
+
+            createDir(parentDir(fullPath))
+
+            writeFile(fullPath, processedFile.data)

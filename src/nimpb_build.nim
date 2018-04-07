@@ -67,7 +67,7 @@ proc compileProtos*(protos: openArray[string],
     var outputFilename = myTempDir() / "file-descriptor-set"
     createDir(myTempDir())
 
-    # add(args, "--include_imports")
+    add(args, "--include_imports")
     add(args, "--include_source_info")
     add(args, &"-o{outputFilename}")
 
@@ -88,7 +88,7 @@ proc compileProtos*(protos: openArray[string],
     if rc != 0:
         raise newException(Exception, outp)
 
-    processFileDescriptorSet(outputFilename, outdir)
+    processFileDescriptorSet(outputFilename, outdir, protos)
 
 
 when isMainModule:
