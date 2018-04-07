@@ -704,59 +704,58 @@ iterator genReadMapKVProc(msg: Message): string =
 iterator genReadMessageProc(msg: Message): string =
     yield &"proc read{msg.names}*(stream: ProtobufStream): {msg.names} ="
     yield indent(&"result = new{msg.names}()", 4)
-    if len(msg.fields) > 0:
-        yield indent("while not atEnd(stream):", 4)
-        yield indent("let", 8)
-        yield indent("tag = readTag(stream)", 12)
-        yield indent("wireType = wireType(tag)", 12)
-        yield indent("case fieldNumber(tag)", 8)
-        yield indent("of 0:", 8)
-        yield indent("raise newException(InvalidFieldNumberError, \"Invalid field number: 0\")", 12)
-        for field in msg.fields:
-            let
-                setter =
-                    if isRepeated(field):
-                        &"add{field.name}"
-                    else:
-                        &"set{field.name}"
-            yield indent(&"of {field.number}:", 8)
-            if isRepeated(field):
-                if isMapEntry(field):
-                    yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
-                    yield indent("let", 12)
-                    yield indent("size = readVarint(stream)", 16)
-                    yield indent("data = safeReadStr(stream, int(size))", 16)
-                    yield indent("pbs = newProtobufStream(newStringStream(data))", 16)
-                    yield indent(&"{field.readProc}(pbs, result.{field.name})", 12)
-                elif isNumeric(field):
-                    yield indent(&"expectWireType(wireType, {field.wiretypeStr}, WireType.LengthDelimited)", 12)
-                    yield indent("if wireType == WireType.LengthDelimited:", 12)
-                    yield indent("let", 16)
-                    yield indent("size = readVarint(stream)", 20)
-                    yield indent("start = uint64(getPosition(stream))", 20)
-                    yield indent("var consumed = 0'u64", 16)
-                    yield indent("while consumed < size:", 16)
-                    yield indent(&"{setter}(result, {field.readProc}(stream))", 20)
-                    yield indent("consumed = uint64(getPosition(stream)) - start", 20)
-                    yield indent("if consumed != size:", 16)
-                    yield indent("raise newException(Exception, \"packed field size mismatch\")", 20)
-                    yield indent("else:", 12)
-                    yield indent(&"{setter}(result, {field.readProc}(stream))", 16)
-                elif isMessage(field):
-                    yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
-                    yield indent(&"let data = readLengthDelimited(stream)", 12)
-                    yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
+    yield indent("while not atEnd(stream):", 4)
+    yield indent("let", 8)
+    yield indent("tag = readTag(stream)", 12)
+    yield indent("wireType = wireType(tag)", 12)
+    yield indent("case fieldNumber(tag)", 8)
+    yield indent("of 0:", 8)
+    yield indent("raise newException(InvalidFieldNumberError, \"Invalid field number: 0\")", 12)
+    for field in msg.fields:
+        let
+            setter =
+                if isRepeated(field):
+                    &"add{field.name}"
                 else:
-                    yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
-                    yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
+                    &"set{field.name}"
+        yield indent(&"of {field.number}:", 8)
+        if isRepeated(field):
+            if isMapEntry(field):
+                yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
+                yield indent("let", 12)
+                yield indent("size = readVarint(stream)", 16)
+                yield indent("data = safeReadStr(stream, int(size))", 16)
+                yield indent("pbs = newProtobufStream(newStringStream(data))", 16)
+                yield indent(&"{field.readProc}(pbs, result.{field.name})", 12)
+            elif isNumeric(field):
+                yield indent(&"expectWireType(wireType, {field.wiretypeStr}, WireType.LengthDelimited)", 12)
+                yield indent("if wireType == WireType.LengthDelimited:", 12)
+                yield indent("let", 16)
+                yield indent("size = readVarint(stream)", 20)
+                yield indent("start = uint64(getPosition(stream))", 20)
+                yield indent("var consumed = 0'u64", 16)
+                yield indent("while consumed < size:", 16)
+                yield indent(&"{setter}(result, {field.readProc}(stream))", 20)
+                yield indent("consumed = uint64(getPosition(stream)) - start", 20)
+                yield indent("if consumed != size:", 16)
+                yield indent("raise newException(Exception, \"packed field size mismatch\")", 20)
+                yield indent("else:", 12)
+                yield indent(&"{setter}(result, {field.readProc}(stream))", 16)
+            elif isMessage(field):
+                yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
+                yield indent(&"let data = readLengthDelimited(stream)", 12)
+                yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
             else:
                 yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
-                if isMessage(field):
-                    yield indent("let data = readLengthDelimited(stream)", 12)
-                    yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
-                else:
-                    yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
-        yield indent("else: readUnknownField(stream, tag, result.unknownFields)", 8)
+                yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
+        else:
+            yield indent(&"expectWireType(wireType, {field.wiretypeStr})", 12)
+            if isMessage(field):
+                yield indent("let data = readLengthDelimited(stream)", 12)
+                yield indent(&"{setter}(result, new{field.typeName}(data))", 12)
+            else:
+                yield indent(&"{setter}(result, {field.readProc}(stream))", 12)
+    yield indent("else: readUnknownField(stream, tag, result.unknownFields)", 8)
     yield ""
 
 iterator genSizeOfMapKVProc(message: Message): string =
