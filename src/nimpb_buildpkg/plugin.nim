@@ -809,8 +809,8 @@ iterator genSizeOfMessageProc(msg: Message): string =
             else:
                 yield indent(&"result = result + {field.sizeOfProc}(message.{field.accessor})", 8)
 
-    if len(msg.fields) == 0:
-        yield indent("result = 0", 4)
+    yield indent("for field in message.unknownFields:", 4)
+    yield indent("result = result + sizeOfUnknownField(field)", 8)
 
     yield ""
 
