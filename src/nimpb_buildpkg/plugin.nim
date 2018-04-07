@@ -52,10 +52,25 @@ type
         messages: seq[Message]
         syntax: Syntax
         dependencies: seq[ProtoFile]
+        serviceGenerator: ServiceGenerator
 
     Syntax {.pure.} = enum
         Proto2
         Proto3
+
+    ServiceGenerator* = proc (service: Service): string
+
+    Service* = ref object
+        name*: string
+        package*: string
+        methods*: seq[ServiceMethod]
+
+    ServiceMethod* = ref object
+        name*: string
+        inputType*: string
+        outputType*: string
+        clientStreaming*: bool
+        serverStreaming*: bool
 
 when defined(debug):
     proc log(msg: string) =
@@ -382,6 +397,25 @@ proc newEnum(names: Names, desc: google_protobuf_EnumDescriptorProto): Enum =
     sort(result.values, proc (x, y: EnumValue): int =
         system.cmp(x.number, y.number)
     )
+
+proc newService(service: google_protobuf_ServiceDescriptorProto,
+                file: ProtoFile): Service =
+    new(result)
+    result.name = service.name
+    result.package = file.fdesc.package
+    result.methods = @[]
+
+    for meth in service.fmethod:
+        var m: ServiceMethod
+        new(m)
+
+        m.name = meth.name
+        m.inputType = $initNamesFromTypeName(meth.inputType)
+        m.outputType = $initNamesFromTypeName(meth.outputType)
+        m.clientStreaming = meth.clientStreaming
+        m.serverStreaming = meth.serverStreaming
+
+        add(result.methods, m)
 
 iterator messages(desc: google_protobuf_DescriptorProto, names: Names): tuple[names: Names, desc: google_protobuf_DescriptorProto] =
     var stack: seq[tuple[names: Names, desc: google_protobuf_DescriptorProto]] = @[]
@@ -868,7 +902,9 @@ iterator genProcs(msg: Message): string =
         yield indent(&"result = read{msg.names}(pbs)", 4)
         yield ""
 
-proc processFile(fdesc: google_protobuf_FileDescriptorProto, otherFiles: TableRef[string, ProtoFile]): ProcessedFile =
+proc processFile(fdesc: google_protobuf_FileDescriptorProto,
+                 otherFiles: TableRef[string, ProtoFile],
+                 serviceGenerator: ServiceGenerator): ProcessedFile =
     var (dir, name, _) = splitFile(fdesc.name)
     var pbfilename = (dir / name) & "_pb.nim"
 
@@ -932,8 +968,16 @@ proc processFile(fdesc: google_protobuf_FileDescriptorProto, otherFiles: TableRe
             addLine(result.data, line)
         addLine(result.data, "")
 
-proc processFileDescriptorSet*(filename: string, outdir: string,
-                               protos: openArray[string]) =
+    if serviceGenerator != nil:
+        for serviceDesc in fdesc.service:
+            let service = newService(serviceDesc, parsed)
+            addLine(result.data, "")
+            add(result.data, serviceGenerator(service))
+
+proc processFileDescriptorSet*(filename: string,
+                               outdir: string,
+                               protos: openArray[string],
+                               serviceGenerator: ServiceGenerator) =
     let s = newProtobufStream(newFileStream(filename, fmRead))
 
     let fileSet = readgoogle_protobuf_FileDescriptorSet(s)
@@ -951,7 +995,7 @@ proc processFileDescriptorSet*(filename: string, outdir: string,
 
     for file in fileSet.file:
         if (file.name in protos) or ((basePath / file.name) in protos):
-            let processedFile = processFile(file, otherFiles)
+            let processedFile = processFile(file, otherFiles, serviceGenerator)
 
             let fullPath = outdir / processedFile.name
 

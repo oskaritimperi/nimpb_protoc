@@ -5,7 +5,9 @@ import strformat
 import strtabs
 import strutils
 
-from nimpb_buildpkg/plugin import processFileDescriptorSet
+from nimpb_buildpkg/plugin import processFileDescriptorSet, ServiceGenerator, Service, ServiceMethod
+
+export Service, ServiceMethod
 
 when defined(windows):
     const compilerId = "win32"
@@ -60,7 +62,8 @@ proc myTempDir(): string =
 
 proc compileProtos*(protos: openArray[string],
                     includes: openArray[string],
-                    outdir: string) =
+                    outdir: string,
+                    serviceGenerator: ServiceGenerator = nil) =
     let command = findCompiler()
     var args: seq[string] = @[]
 
@@ -88,7 +91,7 @@ proc compileProtos*(protos: openArray[string],
     if rc != 0:
         raise newException(Exception, outp)
 
-    processFileDescriptorSet(outputFilename, outdir, protos)
+    processFileDescriptorSet(outputFilename, outdir, protos, serviceGenerator)
 
 
 when isMainModule:
