@@ -31,6 +31,7 @@ type
         defaultValue: string
         message: Message
         jsonName: string
+        protoName: string
 
     Message = ref object
         names: Names
@@ -118,6 +119,21 @@ proc isNumeric(field: Field): bool =
        result = true
     else: discard
 
+proc isFloat(field: Field): bool =
+    case field.ftype
+    of google_protobuf_FieldDescriptorProtoType.TypeDouble: result = true
+    of google_protobuf_FieldDescriptorProtoType.TypeFloat: result = true
+    else: result = false
+
+proc isUnsigned(field: Field): bool =
+    case field.ftype
+    of google_protobuf_FieldDescriptorProtoType.TypeUInt64,
+       google_protobuf_FieldDescriptorProtoType.TypeFixed64,
+       google_protobuf_FieldDescriptorProtoType.TypeFixed32,
+       google_protobuf_FieldDescriptorProtoType.TypeUInt32:
+       result = true
+    else: result = false
+
 proc isMapEntry(message: Message): bool =
     result = message.mapEntry
 
@@ -144,6 +160,11 @@ proc nimTypeName(field: Field): string =
     of google_protobuf_FieldDescriptorProtoType.TypeSFixed64: result = "int64"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt32: result = "int32"
     of google_protobuf_FieldDescriptorProtoType.TypeSInt64: result = "int64"
+
+proc mapKeyField(field: Field): Field =
+    for f in field.mapEntry.fields:
+        if f.name == "key":
+            return f
 
 proc mapKeyType(field: Field): string =
     for f in field.mapEntry.fields:
@@ -301,6 +322,7 @@ proc sizeOfProc(field: Field): string =
 proc newField(file: ProtoFile, message: Message, desc: google_protobuf_FieldDescriptorProto): Field =
     new(result)
 
+    result.protoName = desc.name
     result.name = desc.name
     result.number = desc.number
     result.label = desc.label
@@ -919,6 +941,56 @@ iterator genMessageToJsonProc(msg: Message): string =
 
     yield ""
 
+iterator genMessageFromJsonProc(msg: Message): string =
+    yield &"proc parse{msg.names}FromJson*(obj: JsonNode): {msg.names} ="
+    yield indent(&"result = new{msg.names}()", 4)
+    yield indent(&"var node: JsonNode", 4)
+
+    proc fieldFromJson(field: Field, n: string): string =
+        if isMessage(field):
+            result = &"parse{field.typeName}FromJson({n})"
+        elif isEnum(field):
+            result = &"parseEnum[{field.typeName}]({n})"
+        elif isFloat(field):
+            result = &"parseFloat({n})"
+        elif field.ftype == google_protobuf_FieldDescriptorProto_Type.TypeBool:
+            result = &"parseBool({n})"
+        elif isNumeric(field):
+            result = &"parseInt[{field.nimTypeName}]({n})"
+        elif field.ftype == google_protobuf_FieldDescriptorProto_Type.TypeString:
+            result = &"parseString({n})"
+        elif field.ftype == google_protobuf_FieldDescriptorProto_Type.TypeBytes:
+            result = &"parseBytes({n})"
+
+    for field in msg.fields:
+        yield indent(&"node = getJsonField(obj, \"{field.protoName}\", \"{field.jsonName}\")", 4)
+        yield indent(&"if node != nil:", 4)
+        if isMapEntry(field):
+            yield indent("if node.kind != JObject:", 8)
+            yield indent("raise newException(ValueError, \"not an object\")", 12)
+            yield indent("for keyString, valueNode in node:", 8)
+            let keyField = mapKeyField(field)
+            if isUnsigned(keyField):
+                yield indent(&"let key = {keyField.nimTypeName}(parseBiggestUInt(keyString))", 12)
+            elif isNumeric(keyField):
+                yield indent(&"let key = {keyField.nimTypeName}(parseBiggestInt(keyString))", 12)
+            elif keyField.ftype == google_protobuf_FieldDescriptorProto_Type.TypeString:
+                yield indent("let key = keyString", 12)
+            let valueField = mapValueField(field)
+            let parser = fieldFromJson(valueField, "valueNode")
+            yield indent(&"result.{field.name}[key] = {parser}", 12)
+        elif isRepeated(field):
+            let parser = fieldFromJson(field, "value")
+            yield indent("if node.kind != JArray:", 8)
+            yield indent("raise newException(ValueError, \"not an array\")", 12)
+            yield indent("for value in node:", 8)
+            yield indent(&"add{field.name}(result, {parser})", 12)
+        else:
+            let parser = fieldFromJson(field, "node")
+            yield indent(&"set{field.name}(result, {parser})", 8)
+
+    yield ""
+
 iterator genMessageProcForwards(msg: Message): string =
     # TODO: can we be more intelligent and only forward declare the minimum set
     # of procs?
@@ -930,6 +1002,7 @@ iterator genMessageProcForwards(msg: Message): string =
         yield &"proc sizeOf{msg.names}*(message: {msg.names}): uint64"
         if shouldGenerateJsonProcs($msg.names):
             yield &"proc toJson*(message: {msg.names}): JsonNode"
+            yield &"proc parse{msg.names}FromJson*(obj: JsonNode): {msg.names}"
     else:
         let
             key = mapKeyField(msg)
@@ -963,6 +1036,7 @@ iterator genProcs(msg: Message): string =
 
         if shouldGenerateJsonProcs($msg.names):
             for line in genMessageToJsonProc(msg): yield line
+            for line in genMessageFromJsonProc(msg): yield line
 
         yield &"proc serialize*(message: {msg.names}): string ="
         yield indent("let", 4)
@@ -1008,6 +1082,7 @@ proc processFile(fdesc: google_protobuf_FileDescriptorProto,
     addLine(result.data, "import base64")
     addLine(result.data, "import intsets")
     addLine(result.data, "import json")
+    addLine(result.data, "import strutils")
     if hasMaps:
         addLine(result.data, "import tables")
         addLine(result.data, "export tables")
