@@ -964,7 +964,7 @@ iterator genMessageFromJsonProc(msg: Message): string =
 
     for field in msg.fields:
         yield indent(&"node = getJsonField(obj, \"{field.protoName}\", \"{field.jsonName}\")", 4)
-        yield indent(&"if node != nil:", 4)
+        yield indent(&"if node != nil and node.kind != JNull:", 4)
         if isMapEntry(field):
             yield indent("if node.kind != JObject:", 8)
             yield indent("raise newException(ValueError, \"not an object\")", 12)
