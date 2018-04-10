@@ -134,6 +134,9 @@ proc isUnsigned(field: Field): bool =
        result = true
     else: result = false
 
+proc isBool(field: Field): bool =
+    result = field.ftype == google_protobuf_FieldDescriptorProtoType.TypeBool
+
 proc isMapEntry(message: Message): bool =
     result = message.mapEntry
 
@@ -916,7 +919,7 @@ iterator genMessageToJsonProc(msg: Message): string =
            google_protobuf_FieldDescriptorProto_Type.TypeFloat:
             result = &"toJson({v})"
         of google_protobuf_FieldDescriptorProto_Type.TypeEnum:
-            result = &"%(${v})"
+            result = &"toJson({v})"
         else:
             result = &"%{v}"
 
@@ -946,6 +949,9 @@ iterator genMessageFromJsonProc(msg: Message): string =
     yield indent(&"result = new{msg.names}()", 4)
     yield indent(&"var node: JsonNode", 4)
 
+    yield indent("if obj.kind != JObject:", 4)
+    yield indent("raise newException(JsonParseError, \"object expected\")", 8)
+
     proc fieldFromJson(field: Field, n: string): string =
         if isMessage(field):
             result = &"parse{field.typeName}FromJson({n})"
@@ -970,7 +976,9 @@ iterator genMessageFromJsonProc(msg: Message): string =
             yield indent("raise newException(ValueError, \"not an object\")", 12)
             yield indent("for keyString, valueNode in node:", 8)
             let keyField = mapKeyField(field)
-            if isUnsigned(keyField):
+            if isBool(keyField):
+                yield indent("let key = parseBool(keyString)", 12)
+            elif isUnsigned(keyField):
                 yield indent(&"let key = {keyField.nimTypeName}(parseBiggestUInt(keyString))", 12)
             elif isNumeric(keyField):
                 yield indent(&"let key = {keyField.nimTypeName}(parseBiggestInt(keyString))", 12)
