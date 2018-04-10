@@ -952,7 +952,7 @@ iterator genMessageFromJsonProc(msg: Message): string =
         elif isEnum(field):
             result = &"parseEnum[{field.typeName}]({n})"
         elif isFloat(field):
-            result = &"parseFloat({n})"
+            result = &"parseFloat[{field.nimTypeName}]({n})"
         elif field.ftype == google_protobuf_FieldDescriptorProto_Type.TypeBool:
             result = &"parseBool({n})"
         elif isNumeric(field):
