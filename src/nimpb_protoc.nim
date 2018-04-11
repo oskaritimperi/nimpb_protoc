@@ -29,9 +29,9 @@ else:
 
 let
     paths = @[
-        # getAppDir() / "src" / "nimpb_buildpkg" / "protobuf",
-        # getAppDir() / "nimpb_buildpkg" / "protobuf",
-        parentDir(currentSourcePath()) / "nimpb_buildpkg" / "protobuf",
+        # getAppDir() / "src" / "nimpb_protocpkg" / "protobuf",
+        # getAppDir() / "nimpb_protocpkg" / "protobuf",
+        parentDir(currentSourcePath()) / "nimpb_protocpkg" / "protobuf",
     ]
 
 proc getCompilerPath*(): string =
