@@ -46,5 +46,5 @@ proc getCompilerPath*(): string =
 
 proc getProtoIncludeDir*(): string =
     for path in paths:
-        if fileExists(path / "include"):
+        if dirExists(path / "include"):
             return path / "include"
